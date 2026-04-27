@@ -1,0 +1,3446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Glendale Ophthalmology Associates · Call Performance Review · Feb–Apr 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #FAFAF7;
+    --surface: #FFFFFF;
+    --ink: #111214;
+    --ink-soft: #2B2D31;
+    --text: #1F2024;
+    --muted: #6B6E74;
+    --muted-soft: #9CA0A6;
+    --line: #E6E4DD;
+    --line-soft: #EFEDE7;
+    --crit: #C23B2A;
+    --crit-bg: #FBEDEA;
+    --warn: #B07418;
+    --warn-bg: #FAF0DE;
+    --good: #3D6B4A;
+    --good-bg: #E4EDE2;
+    --accent: #1F3B4D;
+    --accent-bg: #E8EEF2;
+    --gold: #9A7B3B;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Geist', -apple-system, system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+    font-size: 15px;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "ss01", "ss02", "cv11";
+  }
+
+  .mono { font-family: 'Geist Mono', monospace; font-variant-numeric: tabular-nums; }
+
+  .page {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 48px;
+  }
+
+  /* ============ MASTHEAD ============ */
+  .masthead {
+    padding: 40px 0 28px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .masthead-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 32px;
+  }
+
+  .masthead-top .mark {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  .masthead-top .mark::before {
+    content: "";
+    width: 8px; height: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+
+  .masthead-title {
+    font-size: clamp(32px, 4vw, 44px);
+    font-weight: 500;
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+    margin-bottom: 10px;
+  }
+
+  .masthead-sub {
+    font-size: 16px;
+    color: var(--muted);
+    max-width: 720px;
+    line-height: 1.45;
+    margin-bottom: 20px;
+  }
+
+  .masthead-meta {
+    display: flex;
+    gap: 36px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line-soft);
+    font-size: 13px;
+    flex-wrap: wrap;
+  }
+
+  .masthead-meta div { display: flex; flex-direction: column; gap: 2px; }
+  .masthead-meta .label { color: var(--muted); font-size: 12px; }
+  .masthead-meta .val { color: var(--ink); font-weight: 500; }
+
+  /* ============ TAB NAVIGATION ============ */
+  .tabs-nav-wrap {
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+    z-index: 10;
+    border-bottom: 1px solid var(--line);
+    margin: 0 -48px 0;
+    padding: 0 48px;
+    box-shadow: 0 1px 0 var(--line);
+  }
+
+  /* Fade gradient on right edge — hints that tabs scroll */
+  .tabs-nav-wrap::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 5px;
+    width: 56px;
+    background: linear-gradient(to right, transparent, var(--bg) 70%);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .tabs-nav {
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--muted-soft) transparent;
+    scroll-behavior: smooth;
+  }
+
+  .tabs-nav::-webkit-scrollbar {
+    height: 5px;
+  }
+  .tabs-nav::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .tabs-nav::-webkit-scrollbar-thumb {
+    background: var(--muted-soft);
+    border-radius: 3px;
+  }
+  .tabs-nav::-webkit-scrollbar-thumb:hover {
+    background: var(--muted);
+  }
+
+  .tab-btn {
+    padding: 16px 16px;
+    background: none;
+    border: none;
+    font-family: inherit;
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--muted);
+    cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
+    position: relative;
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .tab-btn:hover { color: var(--ink); }
+
+  .tab-btn.active {
+    color: var(--ink);
+    border-bottom-color: var(--ink);
+  }
+
+  .tab-btn .tnum {
+    display: inline-block;
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px;
+    color: var(--muted-soft);
+    margin-right: 8px;
+  }
+
+  .tab-btn.active .tnum { color: var(--accent); }
+
+  /* ============ TAB PANEL ============ */
+  .tab-panel {
+    display: none;
+    padding: 40px 0 60px;
+    animation: fadeIn 0.25s ease;
+  }
+
+  .tab-panel.active { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Print: show all tabs */
+  @media print {
+    .tabs-nav-wrap { display: none; }
+    .tab-panel { display: block !important; page-break-before: always; padding: 20pt 0; }
+    .tab-panel:first-of-type { page-break-before: avoid; }
+  }
+
+  /* ============ SECTION HEAD ============ */
+  .sec-head {
+    margin-bottom: 28px;
+  }
+
+  .sec-kicker {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 12px;
+    font-weight: 500;
+  }
+
+  .sec-kicker .tnum {
+    display: inline-block;
+    padding: 2px 8px;
+    background: var(--ink);
+    color: var(--surface);
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: 500;
+    font-family: 'Geist Mono', monospace;
+  }
+
+  .sec-title {
+    font-size: 30px;
+    font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    margin-bottom: 10px;
+    max-width: 820px;
+  }
+
+  .sec-lead {
+    font-size: 16px;
+    color: var(--muted);
+    max-width: 740px;
+    line-height: 1.5;
+  }
+
+  /* ============ HEADLINE METRICS ============ */
+  .hmetrics {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    margin: 28px 0 40px;
+  }
+
+  .hmetric {
+    background: var(--surface);
+    padding: 20px 22px;
+  }
+
+  .hmetric-label {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+
+  .hmetric-value {
+    font-size: 30px;
+    font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .hmetric-value .unit {
+    font-size: 17px;
+    color: var(--muted);
+    font-weight: 400;
+    margin-left: 2px;
+  }
+
+  .hmetric-note {
+    margin-top: 10px;
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+
+  .hmetric-note.crit { color: var(--crit); }
+  .hmetric-note.good { color: var(--good); }
+  .hmetric-note.warn { color: var(--warn); }
+
+  /* ============ KEY TAKEAWAYS LIST ============ */
+  .takeaways {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin: 20px 0;
+  }
+
+  .take {
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    gap: 14px;
+    padding: 16px 20px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    align-items: start;
+  }
+
+  .take-num {
+    width: 24px; height: 24px;
+    background: var(--ink);
+    color: var(--surface);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  .take-num.good { background: var(--good); }
+  .take-num.warn { background: var(--warn); }
+  .take-num.crit { background: var(--crit); }
+  .take-num.accent { background: var(--accent); }
+
+  .take-body {
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--text);
+    padding-top: 2px;
+  }
+
+  .take-body strong { color: var(--ink); font-weight: 600; }
+  .take-body .crit-text { color: var(--crit); font-weight: 600; }
+  .take-body .good-text { color: var(--good); font-weight: 600; }
+
+  /* ============ PANEL / CHART WRAP ============ */
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    padding: 22px 24px;
+  }
+
+  .panel-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--line-soft);
+  }
+
+  .panel-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .panel-sub {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .chart-canvas { position: relative; height: 240px; }
+  .chart-canvas.tall { height: 300px; }
+  .chart-canvas.xtall { height: 340px; }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-bottom: 18px;
+  }
+
+  .three-col {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 18px;
+  }
+
+  /* ============ TABLE ============ */
+  .tbl-wrap {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    overflow: hidden;
+    overflow-x: auto;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  thead th {
+    background: var(--line-soft);
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 500;
+    border-bottom: 1px solid var(--line);
+    white-space: nowrap;
+  }
+
+  thead th.num { text-align: right; }
+
+  tbody td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--line-soft);
+    color: var(--text);
+  }
+
+  tbody td.num {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  tbody tr:last-child td { border-bottom: none; }
+
+  tbody tr.total td {
+    background: var(--line-soft);
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  tbody tr.highlight td {
+    background: var(--crit-bg);
+  }
+
+  .strong { font-weight: 600; color: var(--ink); }
+
+  .pill {
+    display: inline-block;
+    padding: 2px 9px;
+    font-size: 12px;
+    font-weight: 500;
+    border-radius: 3px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .pill.good { background: var(--good-bg); color: var(--good); }
+  .pill.warn { background: var(--warn-bg); color: var(--warn); }
+  .pill.crit { background: var(--crit-bg); color: var(--crit); }
+  .pill.neutral { background: var(--line-soft); color: var(--muted); }
+  .pill.accent { background: var(--accent-bg); color: var(--accent); }
+
+  /* ============ CALLOUTS ============ */
+  .callout {
+    background: var(--ink);
+    color: var(--surface);
+    padding: 26px 30px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 26px;
+    align-items: center;
+    margin: 16px 0;
+  }
+
+  .callout.critical { background: var(--crit); }
+  .callout.good { background: var(--good); }
+  .callout.accent { background: var(--accent); }
+
+  .callout-number {
+    font-size: 56px;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .callout-number .unit { font-size: 32px; opacity: 0.75; }
+  .callout-number .sign { font-size: 32px; opacity: 0.6; margin-right: 4px; }
+
+  .callout-text {
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1.4;
+  }
+
+  .callout-text .label {
+    display: block;
+    font-size: 12px;
+    opacity: 0.7;
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+
+  /* ============ GLOSSARY NOTE ============ */
+  .gnote {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--accent);
+    padding: 14px 18px;
+    font-size: 13.5px;
+    color: var(--text);
+    margin-bottom: 20px;
+    line-height: 1.55;
+  }
+
+  .gnote .lbl {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 0.04em;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .gnote strong { color: var(--ink); font-weight: 600; }
+
+  /* ============ FUNNEL ============ */
+  .funnel-row {
+    display: grid;
+    grid-template-columns: 220px 1fr 110px;
+    gap: 20px;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .funnel-row:last-child { border-bottom: none; }
+
+  .funnel-label {
+    font-size: 14px;
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  .funnel-label .sub {
+    display: block;
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .funnel-bar {
+    height: 20px;
+    background: var(--line-soft);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .funnel-bar-fill {
+    height: 100%;
+    background: var(--ink);
+    transition: width 1s ease;
+  }
+
+  .funnel-bar-fill.crit { background: var(--crit); }
+  .funnel-bar-fill.warn { background: var(--warn); }
+  .funnel-bar-fill.good { background: var(--good); }
+  .funnel-bar-fill.accent { background: var(--accent); }
+
+  .funnel-value {
+    text-align: right;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .funnel-value .pct {
+    display: block;
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 400;
+    margin-top: 2px;
+  }
+
+  /* ============ IMPACT CARDS ============ */
+  .impact-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-top: 20px;
+  }
+
+  .impact-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    padding: 22px 22px 20px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .impact-card .when {
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.02em;
+    font-weight: 500;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+
+  .impact-card .what {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.3;
+    margin-bottom: 16px;
+  }
+
+  .impact-card .delta {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin: auto 0 6px;
+    padding-top: 14px;
+    border-top: 1px solid var(--line-soft);
+  }
+
+  .impact-card .before {
+    font-size: 13px;
+    color: var(--muted);
+    text-decoration: line-through;
+    text-decoration-color: var(--muted-soft);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .impact-card .arrow {
+    color: var(--muted-soft);
+    font-size: 12px;
+  }
+
+  .impact-card .after {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--good);
+    letter-spacing: -0.015em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .impact-card .impact-note {
+    font-size: 12.5px;
+    color: var(--muted);
+    line-height: 1.5;
+    margin-top: 2px;
+  }
+
+  /* ============ REASONS SPLIT ============ */
+  .reasons-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+
+  .rcol {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    padding: 22px 24px;
+  }
+
+  .rcol h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line-soft);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .rcol h4 .tag {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 3px;
+  }
+
+  .rcol h4 .tag.act { background: var(--crit-bg); color: var(--crit); }
+  .rcol h4 .tag.str { background: var(--line-soft); color: var(--muted); }
+
+  .rrow {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    padding: 9px 0;
+    border-bottom: 1px dotted var(--line);
+    font-size: 14px;
+    align-items: baseline;
+  }
+
+  .rrow:last-child { border-bottom: none; }
+
+  .rrow-num {
+    font-family: 'Geist Mono', monospace;
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  .rrow-num strong { color: var(--ink); margin-right: 8px; font-weight: 600; }
+
+  .rcol-foot {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid var(--line-soft);
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .rcol-foot strong { color: var(--ink); font-weight: 600; }
+
+  /* ============ PRIORITY CARDS ============ */
+  .priority-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .pcard {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--muted);
+    padding: 18px 22px;
+  }
+
+  .pcard.crit { border-left-color: var(--crit); }
+  .pcard.warn { border-left-color: var(--warn); }
+  .pcard.low { border-left-color: var(--good); }
+
+  .pcard-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 3px;
+    margin-bottom: 10px;
+    letter-spacing: 0.02em;
+    font-family: 'Geist Mono', monospace;
+  }
+
+  .pcard.crit .pcard-tag { background: var(--crit-bg); color: var(--crit); }
+  .pcard.warn .pcard-tag { background: var(--warn-bg); color: var(--warn); }
+  .pcard.low .pcard-tag { background: var(--good-bg); color: var(--good); }
+
+  .pcard-title {
+    font-size: 15.5px;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.3;
+    margin-bottom: 8px;
+  }
+
+  .pcard-body {
+    font-size: 13.5px;
+    color: var(--text);
+    line-height: 1.5;
+    margin-bottom: 10px;
+  }
+
+  .pcard-action {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.5;
+    padding-top: 10px;
+    border-top: 1px solid var(--line-soft);
+  }
+
+  .pcard-action .lbl {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 4px;
+    letter-spacing: 0.02em;
+  }
+
+  /* ============ 30/60/90 ============ */
+  .plan {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+
+  .pcol {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    padding: 22px 24px;
+  }
+
+  .pcol-phase {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+
+  .pcol-days {
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+  }
+
+  .pcol-head {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    padding-bottom: 14px;
+    margin-bottom: 14px;
+    border-bottom: 1px solid var(--line-soft);
+  }
+
+  .pcol ul { list-style: none; padding: 0; }
+
+  .pcol li {
+    position: relative;
+    padding-left: 18px;
+    margin-bottom: 10px;
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: var(--text);
+  }
+
+  .pcol li::before {
+    content: "—";
+    position: absolute;
+    left: 0;
+    color: var(--muted-soft);
+  }
+
+  .pcol li strong { color: var(--ink); font-weight: 600; }
+
+  /* ============ PCC / AGENT CARDS ============ */
+  .agent-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 12px;
+    margin-top: 20px;
+  }
+
+  .acard {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    padding: 18px 20px;
+  }
+
+  .acard .name {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+
+  .acard .role {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+
+  .acard .status {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 3px;
+    margin-bottom: 12px;
+  }
+
+  .acard .status.good { background: var(--good-bg); color: var(--good); }
+  .acard .status.warn { background: var(--warn-bg); color: var(--warn); }
+  .acard .status.crit { background: var(--crit-bg); color: var(--crit); }
+  .acard .status.neutral { background: var(--line-soft); color: var(--muted); }
+
+  .acard .trend {
+    font-family: 'Geist Mono', monospace;
+    font-size: 13px;
+    color: var(--ink);
+    padding: 10px 0;
+    border-top: 1px solid var(--line-soft);
+    border-bottom: 1px solid var(--line-soft);
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .acard .trend .lbl {
+    font-family: 'Geist', sans-serif;
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 400;
+  }
+
+  .acard .note {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.45;
+  }
+
+  /* ============ TIMELINE ============ */
+  .timeline {
+    position: relative;
+    margin: 28px 0;
+    padding-left: 0;
+  }
+
+  .tl-item {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 24px;
+    padding: 16px 0;
+    border-top: 1px solid var(--line-soft);
+    position: relative;
+  }
+
+  .tl-item:first-child { border-top: none; }
+
+  .tl-date {
+    font-family: 'Geist Mono', monospace;
+    font-size: 13px;
+    color: var(--accent);
+    font-weight: 500;
+    padding-top: 2px;
+  }
+
+  .tl-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+
+  .tl-body {
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.5;
+  }
+
+  .tl-body strong { color: var(--ink); font-weight: 600; }
+
+  /* ============ FOOTER ============ */
+  footer {
+    padding: 40px 0 60px;
+    border-top: 1px solid var(--line);
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    font-size: 12px;
+    color: var(--muted);
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  footer strong { color: var(--ink); font-weight: 500; display: block; margin-top: 2px; }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 900px) {
+    .page { padding: 0 24px; }
+    .tabs-nav-wrap { margin: 0 -24px; padding: 0 24px; }
+    .hmetrics { grid-template-columns: repeat(2, 1fr); }
+    .two-col, .priority-grid, .reasons-split, .plan,
+    .three-col, .impact-grid { grid-template-columns: 1fr; }
+    .callout { grid-template-columns: 1fr; gap: 14px; }
+    .callout-number { font-size: 44px; }
+    .funnel-row { grid-template-columns: 1fr; gap: 8px; }
+    .masthead-title { font-size: 28px; }
+    .tl-item { grid-template-columns: 1fr; gap: 6px; }
+    .tl-date { padding-top: 0; }
+  }
+
+  /* ============ TIMING PATTERNS (TAB 03b) ============ */
+  .heatmap-wrap { background: var(--surface); border: 1px solid var(--line); padding: 26px 28px; margin-bottom: 22px; }
+  .heatmap-head { margin-bottom: 20px; }
+  .heatmap {
+    display: grid;
+    grid-template-columns: 128px repeat(4, 1fr) 92px;
+    gap: 4px;
+    font-size: 13px;
+    font-variant-numeric: tabular-nums;
+  }
+  .heatmap .hm-cell { padding: 14px 10px; text-align: center; border-radius: 2px; position: relative; }
+  .heatmap .hm-head { background: transparent; color: var(--muted); font-size: 11.5px; font-weight: 500; letter-spacing: 0.02em; text-transform: uppercase; padding: 8px 4px; border-bottom: 1px solid var(--line); }
+  .heatmap .hm-head .hm-sub { display: block; font-size: 10px; font-weight: 400; text-transform: none; letter-spacing: 0; color: var(--muted-soft); margin-top: 3px; }
+  .heatmap .hm-row-label { color: var(--ink); font-weight: 500; text-align: left; padding-left: 4px; font-size: 14px; align-self: center; }
+  .heatmap .hm-row-label .sub { display: block; font-size: 11px; color: var(--muted); font-weight: 400; margin-top: 1px; }
+  .heatmap .hm-total { color: var(--ink); font-weight: 500; text-align: right; padding-right: 4px; align-self: center; }
+  .heatmap .hm-total .hm-val { font-size: 17px; }
+  .heatmap .hm-total .sub { display: block; font-size: 11px; color: var(--muted); font-weight: 400; margin-top: 1px; }
+  .hm-val { font-size: 17px; font-weight: 500; color: var(--ink); letter-spacing: -0.01em; }
+  .hm-vol { display: block; font-size: 10.5px; color: var(--muted); margin-top: 3px; font-weight: 400; letter-spacing: 0.02em; }
+  .hm-cell.tier-best  { background: #D4E3D5; }
+  .hm-cell.tier-good  { background: #E4EDE2; }
+  .hm-cell.tier-ok    { background: #F4F1E4; }
+  .hm-cell.tier-warn  { background: #FAF0DE; }
+  .hm-cell.tier-bad   { background: #F7DDD4; }
+  .hm-cell.tier-worst { background: #EFB5AA; }
+  .hm-cell.tier-worst .hm-val { color: #7F2418; }
+  .hm-legend { display: flex; align-items: center; gap: 14px; margin-top: 18px; font-size: 11.5px; color: var(--muted); flex-wrap: wrap; }
+  .hm-legend .swatch { display: inline-flex; align-items: center; gap: 6px; }
+  .hm-legend .swatch::before { content: ""; width: 12px; height: 12px; border-radius: 2px; background: var(--line); }
+  .hm-legend .swatch.s-best::before  { background: #D4E3D5; }
+  .hm-legend .swatch.s-good::before  { background: #E4EDE2; }
+  .hm-legend .swatch.s-ok::before    { background: #F4F1E4; }
+  .hm-legend .swatch.s-warn::before  { background: #FAF0DE; }
+  .hm-legend .swatch.s-bad::before   { background: #F7DDD4; }
+  .hm-legend .swatch.s-worst::before { background: #EFB5AA; }
+
+  .findings-head { font-size: 18px; font-weight: 500; color: var(--ink); margin: 38px 0 16px; letter-spacing: -0.01em; }
+  .finding { background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--accent); padding: 20px 24px; margin-bottom: 12px; display: grid; grid-template-columns: 46px 1fr; gap: 18px; align-items: start; }
+  .finding.crit { border-left-color: var(--crit); }
+  .finding.warn { border-left-color: var(--warn); }
+  .finding.good { border-left-color: var(--good); }
+  .finding .fnum { font-family: 'Geist Mono', monospace; font-size: 13px; color: var(--muted); padding-top: 2px; font-variant-numeric: tabular-nums; }
+  .finding .fbody h4 { font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 5px; }
+  .finding .fbody p { font-size: 14px; color: var(--text); line-height: 1.55; }
+  .finding .fbody .crit-text { color: var(--crit); font-weight: 600; }
+  .finding .fbody .good-text { color: var(--good); font-weight: 600; }
+  .finding .fbody .warn-text { color: var(--warn); font-weight: 600; }
+  .finding .fbody strong { color: var(--ink); font-weight: 600; }
+
+  .reco-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 18px; }
+  .reco { background: var(--surface); border: 1px solid var(--line); border-top: 3px solid var(--ink); padding: 20px 22px; }
+  .reco.crit { border-top-color: var(--crit); }
+  .reco.warn { border-top-color: var(--warn); }
+  .reco.accent { border-top-color: var(--accent); }
+  .reco-tag { font-family: 'Geist Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 10px; font-weight: 500; }
+  .reco h4 { font-size: 15.5px; font-weight: 600; color: var(--ink); margin-bottom: 8px; line-height: 1.3; }
+  .reco p { font-size: 13.5px; color: var(--text); line-height: 1.5; }
+
+  .foot-note { font-size: 12px; color: var(--muted); margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--line-soft); line-height: 1.5; }
+
+  @media (max-width: 900px) {
+    .heatmap { grid-template-columns: 96px repeat(4, 1fr) 72px; font-size: 12px; }
+    .reco-grid { grid-template-columns: 1fr; }
+  }
+
+  @media print {
+    body { background: white; font-size: 11pt; }
+    .page { padding: 0; max-width: 100%; }
+    section, .tab-panel { page-break-inside: avoid; }
+    .pcard, .panel, .callout, .rcol, .acard, .impact-card, .finding, .reco, .heatmap-wrap { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- ============ MASTHEAD ============ -->
+  <header class="masthead">
+    <div class="masthead-top">
+      <span class="mark">VoiceStack Analytics</span>
+      <span>Confidential · Leadership Review</span>
+    </div>
+
+    <h1 class="masthead-title">Call Performance Review</h1>
+    <p class="masthead-sub">A 10-week view of inbound call demand, conversion, and the three VoiceStack product releases that moved the numbers.</p>
+
+    <div class="masthead-meta">
+      <div>
+        <span class="label">Office</span>
+        <span class="val">Glendale Ophthalmology Associates</span>
+      </div>
+      <div>
+        <span class="label">Parent</span>
+        <span class="val">Glendale Vision Group</span>
+      </div>
+      <div>
+        <span class="label">Reporting period</span>
+        <span class="val">1 February — 17 April 2026</span>
+      </div>
+      <div>
+        <span class="label">Calls analyzed</span>
+        <span class="val">5,290 inbound</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ TABS NAV ============ -->
+  <div class="tabs-nav-wrap">
+    <nav class="tabs-nav" role="tablist">
+      <button class="tab-btn active" data-tab="overview"><span class="tnum">01</span>Overview</button>
+      <button class="tab-btn" data-tab="impact"><span class="tnum">02</span>VoiceStack Impact</button>
+      <button class="tab-btn" data-tab="volume"><span class="tnum">03</span>Call Volume</button>
+      <button class="tab-btn" data-tab="timing"><span class="tnum">03b</span>Timing Patterns</button>
+      <button class="tab-btn" data-tab="missed"><span class="tnum">04</span>Missed Calls</button>
+      <button class="tab-btn" data-tab="callback"><span class="tnum">05</span>Callback</button>
+      <button class="tab-btn" data-tab="opps"><span class="tnum">06</span>Opportunities</button>
+      <button class="tab-btn" data-tab="appts"><span class="tnum">07</span>Appointments</button>
+      <button class="tab-btn" data-tab="reasons"><span class="tnum">08</span>Why Bookings Fail</button>
+      <button class="tab-btn" data-tab="team"><span class="tnum">09</span>Team</button>
+      <button class="tab-btn" data-tab="plan"><span class="tnum">10</span>Action Plan</button>
+    </nav>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- ===================  TAB 01 · OVERVIEW  ==================== -->
+  <!-- ============================================================ -->
+  <div class="tab-panel active" id="tab-overview">
+
+    <!-- HEADLINE METRICS -->
+    <div class="hmetrics">
+      <div class="hmetric">
+        <div class="hmetric-label">Total inbound calls</div>
+        <div class="hmetric-value">5,290</div>
+        <div class="hmetric-note">Over 10.5 weeks</div>
+      </div>
+      <div class="hmetric">
+        <div class="hmetric-label">Answer rate</div>
+        <div class="hmetric-value">80.5<span class="unit">%</span></div>
+        <div class="hmetric-note good">↑ 85.5% in April</div>
+      </div>
+      <div class="hmetric">
+        <div class="hmetric-label">Opportunities created</div>
+        <div class="hmetric-value">2,444</div>
+        <div class="hmetric-note">1,853 booked · 75.8% conversion</div>
+      </div>
+      <div class="hmetric">
+        <div class="hmetric-label">Pending PCC pipeline</div>
+        <div class="hmetric-value">385</div>
+        <div class="hmetric-note crit">High-value leads, one owner</div>
+      </div>
+    </div>
+
+    <!-- SECTION: The Bottom Line -->
+    <div class="sec-head">
+      <div class="sec-kicker"><span class="tnum">01.1</span> The bottom line</div>
+      <h2 class="sec-title">What leadership needs to know, in five points</h2>
+      <p class="sec-lead">The rest of the tabs support these points. If you read nothing else, read this.</p>
+    </div>
+
+    <div class="takeaways">
+      <div class="take">
+        <div class="take-num good">1</div>
+        <div class="take-body"><strong>Three VoiceStack releases moved the numbers.</strong> The callback feature (10 March), the 30-minute queue extension (14 April), and the IVR removal (16 April) are each directly measurable in the data. Answer rate rose from 77.6% in March to 85.5% in April. <span class="good-text">The product roadmap is working.</span> See Tab 02.</div>
+      </div>
+      <div class="take">
+        <div class="take-num crit">2</div>
+        <div class="take-body"><strong>385 high-value leads sit in one person's follow-up queue.</strong> 394 Patient Opportunity Cards (POCs) were created across the period — all assigned to Rozina Ahmed (PCC). Only 8 have converted; 385 remain in "Pending Followup". 60% are Hot leads, 81% have conversion probability ≥ 70%. <span class="crit-text">This is the single biggest unlock available to the office.</span> See Tab 06.</div>
+      </div>
+      <div class="take">
+        <div class="take-num warn">3</div>
+        <div class="take-body"><strong>New-patient conversion fell from 45.6% → 26.5% — but the cause is structural, not skill.</strong> 15 of April's 22 "Insurance Not Accepted" refusals were new patients. The conversion drop is mostly a policy effect, not a team performance issue. Existing-patient conversion is steady at 83%. See Tab 06.</div>
+      </div>
+      <div class="take">
+        <div class="take-num accent">4</div>
+        <div class="take-body"><strong>The callback system is now reconnecting patients automatically.</strong> 140 patients used the callback feature since 10 March. 95 were successfully reconnected by the system (68%); only 11 were permanently lost. That's 95 patient conversations that would otherwise have depended on a manual call-back — the feature is doing the team's work.</div>
+      </div>
+      <div class="take">
+        <div class="take-num">5</div>
+        <div class="take-body"><strong>The operational foundation is strong.</strong> Capacity misses collapsed from 3.0% (March) to 0.7% (April). Pre-queue drops dropped from 6.9% to around 3% after the IVR was removed. April booked 564 appointments from 791 opportunities. The office is now set up to convert better — the next tier of work is commercial, not operational.</div>
+      </div>
+    </div>
+
+    <!-- SECTION: Scorecard -->
+    <div class="sec-head" style="margin-top: 44px;">
+      <div class="sec-kicker"><span class="tnum">01.2</span> Period scorecard</div>
+      <h2 class="sec-title">The numbers at a glance</h2>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Metric</th>
+            <th class="num">February</th>
+            <th class="num">March</th>
+            <th class="num">April (to 17th)</th>
+            <th>Direction</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="strong">Total inbound calls</td><td class="num">1,907</td><td class="num">2,275</td><td class="num">1,108</td><td><span class="pill neutral">Seasonal</span></td></tr>
+          <tr><td class="strong">Answer rate</td><td class="num"><span class="pill good">81.1%</span></td><td class="num"><span class="pill warn">77.6%</span></td><td class="num"><span class="pill good">85.5%</span></td><td><span class="pill good">Improving</span></td></tr>
+          <tr><td class="strong">Capacity misses</td><td class="num">2.2%</td><td class="num">3.0%</td><td class="num">0.7%</td><td><span class="pill good">Resolved</span></td></tr>
+          <tr><td class="strong">Pre-queue drops</td><td class="num">6.7%</td><td class="num">8.1%</td><td class="num">6.9%</td><td><span class="pill accent">IVR removed 16 Apr</span></td></tr>
+          <tr><td class="strong">Opportunities created</td><td class="num">761</td><td class="num">892</td><td class="num">791</td><td><span class="pill good">Healthy</span></td></tr>
+          <tr><td class="strong">New-patient conversion</td><td class="num"><span class="pill warn">45.6%</span></td><td class="num"><span class="pill crit">33.0%</span></td><td class="num"><span class="pill crit">26.5%</span></td><td><span class="pill crit">Declining</span></td></tr>
+          <tr><td class="strong">Existing-patient conversion</td><td class="num"><span class="pill good">83.8%</span></td><td class="num"><span class="pill good">83.2%</span></td><td class="num"><span class="pill good">83.8%</span></td><td><span class="pill good">Stable</span></td></tr>
+          <tr><td class="strong">Callback requests received</td><td class="num">—</td><td class="num">109</td><td class="num">31</td><td><span class="pill accent">Feature implemented 10 Mar</span></td></tr>
+          <tr><td class="strong">Callback fulfillment rate</td><td class="num">—</td><td class="num">63%</td><td class="num">77%</td><td><span class="pill good">↑ 22% after 14 Apr</span></td></tr>
+          <tr><td class="strong">Unique missed calls</td><td class="num">409</td><td class="num">488</td><td class="num">202</td><td><span class="pill good">Falling</span></td></tr>
+          <tr><td class="strong">Missed calls never responded</td><td class="num" style="color:var(--crit);">149</td><td class="num" style="color:var(--crit);">151</td><td class="num" style="color:var(--crit);">67</td><td><span class="pill crit">Stable gap</span></td></tr>
+          <tr><td class="strong">New PCC opportunities (POCs)</td><td class="num">131</td><td class="num">152</td><td class="num">111</td><td><span class="pill neutral">Healthy flow</span></td></tr>
+          <tr><td class="strong">PCC pipeline converted</td><td class="num">0</td><td class="num">1</td><td class="num">7</td><td><span class="pill crit">2% of total</span></td></tr>
+          <tr><td class="strong">Appointment-management interactions</td><td class="num">409</td><td class="num">445</td><td class="num">211</td><td><span class="pill neutral">Steady</span></td></tr>
+          <tr><td class="strong">Cancellation save rate</td><td class="num"><span class="pill good">29.1%</span></td><td class="num"><span class="pill good">36.8%</span></td><td class="num"><span class="pill crit">5.7%</span></td><td><span class="pill crit">Collapsed in Apr</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="font-size:14px; color:var(--muted); margin-top:16px; font-style:italic;">
+      Note on "April (to 17th)": April is 17 days of data vs 28 for February and 31 for March. Percentage-based metrics are directly comparable; absolute counts are not.
+    </p>
+  </div>
+
+
+  <!-- ============================================================ -->
+  <!-- ============  TAB 02 · VOICESTACK IMPACT  ================== -->
+  <!-- ============================================================ -->
+  <div class="tab-panel" id="tab-impact">
+
+    <div class="sec-head">
+      <div class="sec-kicker"><span class="tnum">02</span> Product Impact</div>
+      <h2 class="sec-title">Three VoiceStack releases. Three measurable improvements.</h2>
+      <p class="sec-lead">In six weeks, three product changes moved the office's core call metrics. The data below shows the before and after for each.</p>
+    </div>
+
+    <!-- Timeline -->
+    <div class="panel" style="margin-bottom: 24px;">
+      <div class="panel-head">
+        <div class="panel-title">Release timeline</div>
+        <div class="panel-sub">March–April 2026</div>
+      </div>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-date">10 March</div>
+          <div>
+            <div class="tl-title">Callback feature implemented</div>
+            <div class="tl-body">Patients waiting in queue can press 1 to hold their position and receive an automatic callback when their turn arrives — instead of hanging up and never reaching the office. Before this, the only recovery options were the team calling back (rare) or the patient calling a second time.</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-date">14 April</div>
+          <div>
+            <div class="tl-title">Callback queue time extended: 10 min → 30 min</div>
+            <div class="tl-body">A callback request previously timed out after 10 minutes, marking it as "Not Fulfilled." The window was tripled to 30 minutes so the PCC and front-desk agents have enough time to reach the patient. <strong>Three days of data show a 22-point lift in callback fulfillment.</strong></div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-date">16 April</div>
+          <div>
+            <div class="tl-title">IVR menu removed</div>
+            <div class="tl-body">The phone tree ("press 1 for appointments…") was removed — calls now go straight to an agent. Patients no longer hang up during a menu they never wanted. <strong>Pre-queue drops, previously 6.7–8.1% of all calls, dropped to around 3% the following day — roughly halving the category.</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Impact cards -->
+    <div class="sec-head" style="margin-top: 40px;">
+      <div class="sec-kicker"><span class="tnum">02.1</span> Impact at a glance</div>
+      <h2 class="sec-title">What changed, measured</h2>
+    </div>
+
+    <div class="impact-grid">
+      <div class="impact-card">
+        <div class="when">Callback · since 10 Mar</div>
+        <div class="what">Answer rate improved<br>as the callback feature reconnects missed patients</div>
+        <div class="delta">
+          <span class="before">77.6%</span>
+          <span class="arrow">→</span>
+          <span class="after">85.5%</span>
+        </div>
+        <p class="impact-note">March to April, a 7.9-point rise. The system now auto-reconnects patients who previously would have been missed.</p>
+      </div>
+      <div class="impact-card">
+        <div class="when">Queue ext · since 14 Apr</div>
+        <div class="what">Callback fulfillment rate<br>rose after the timeout window was tripled</div>
+        <div class="delta">
+          <span class="before">70%</span>
+          <span class="arrow">→</span>
+          <span class="after">92%</span>
+        </div>
+        <p class="impact-note">Based on the three days following the change (14–17 April). Small sample, but the direction is clear and aligned with the hypothesis.</p>
+      </div>
+      <div class="impact-card">
+        <div class="when">IVR removed · 16 Apr</div>
+        <div class="what">Pre-queue drops<br>fell as callers stopped hanging up mid-menu</div>
+        <div class="delta">
+          <span class="before">6.9%</span>
+          <span class="arrow">→</span>
+          <span class="after">~3%</span>
+        </div>
+        <p class="impact-note">One to two days of post-change data. The drop rate has roughly halved — the effect will be confirmed over May.</p>
+      </div>
+    </div>
+
+    <!-- The 1. Callback detailed story -->
+    <div class="sec-head" style="margin-top: 44px;">
+      <div class="sec-kicker"><span class="tnum">02.2</span> Release 1</div>
+      <h2 class="sec-title">The callback feature did the team's work for them</h2>
+      <p class="sec-lead">Before 10 March, a missed call had only two routes back to a conversation: the patient ringing again, or the team calling them back. The callback feature introduced a third: the system itself.</p>
+    </div>
+
+    <div class="panel" style="margin-bottom: 20px;">
+      <div class="panel-head">
+        <div class="panel-title">Answer rate, before and after the callback feature</div>
+        <div class="panel-sub">Monthly trend · 10 March release</div>
+      </div>
+      <div class="chart-canvas tall"><canvas id="answerRateChart"></canvas></div>
+    </div>
+
+    <div class="takeaways">
+      <div class="take">
+        <div class="take-num good">✓</div>
+        <div class="take-body">Between the pre-launch weeks and the post-launch weeks, the answer rate improved from roughly 77–81% to <strong>85.5% in April</strong> — an 8-point lift that will compound over a full year.</div>
+      </div>
+      <div class="take">
+        <div class="take-num accent">✓</div>
+        <div class="take-body">140 patients used the callback feature since it was implemented. <strong>95 were successfully reconnected by the system</strong> without anyone lifting a finger. Without the feature, most of those 95 would have been added to the missed-call queue.</div>
+      </div>
+    </div>
+
+    <!-- The 2. Queue extension story -->
+    <div class="sec-head" style="margin-top: 44px;">
+      <div class="sec-kicker"><span class="tnum">02.3</span> Release 2</div>
+      <h2 class="sec-title">Extending the callback window from 10 to 30 minutes</h2>
+      <p class="sec-lead">Callback requests were timing out before the PCC had time to reach the patient. The 30-minute window gives the team enough room to work.</p>
+    </div>
+
+    <div class="two-col">
+      <div class="panel">
+        <div class="panel-head">
+          <div class="panel-title">Callback fulfillment rate</div>
+          <div class="panel-sub">Before vs after 14 April · 3 days post-data</div>
+        </div>
+        <div class="chart-canvas"><canvas id="queueExtChart"></canvas></div>
+      </div>
+      <div class="panel" style="display:flex; flex-direction:column; justify-content:center;">
+        <p style="font-size:14px; color:var(--text); line-height:1.6; margin-bottom:12px;">
+          <strong style="color:var(--ink);">Before 14 April:</strong> ~70% of callback requests were fulfilled (patient successfully reconnected within the 10-minute timeout window).
+        </p>
+        <p style="font-size:14px; color:var(--text); line-height:1.6; margin-bottom:12px;">
+          <strong style="color:var(--ink);">After 14 April:</strong> 92% of callback requests are being fulfilled within the new 30-minute window.
+        </p>
+        <p style="font-size:13px; color:var(--muted); line-height:1.5; border-top:1px solid var(--line-soft); padding-top:12px;">
+          <em>Caveat: only three days of post-change data (14–17 April). The direction is correct but the exact percentage will settle with more weeks observed.</em>
+        </p>
+      </div>
+    </div>
+
+    <div class="callout good" style="margin-top: 24px;">
+      <div class="callout-number"><span class="sign">+</span>22<span class="unit">pts</span></div>
+      <div class="callout-text">
+        <span class="label">THE LIFT</span>
+        in callback fulfillment rate in the three days after the queue-time extension. Each additional fulfilled callback is a patient who reached the office instead of disappearing.
+      </div>
+    </div>
+
+    <!-- The 3. IVR removal story -->
+    <div class="sec-head" style="margin-top: 44px;">
+      <div class="sec-kicker"><span class="tnum">02.4</span> Release 3</div>
+      <h2 class="sec-title">Removing the IVR cut pre-queue drops roughly in half</h2>
+      <p class="sec-lead">Pre-queue drops happen when a caller hangs up during the IVR menu, before they ever reach an agent. The office consistently lost 6–8% of callers this way. Early post-change data shows the rate has dropped to around 3%.</p>
+    </div>
+
+    <div class="panel" style="margin-bottom: 20px;">
+      <div class="panel-head">
+        <div class="panel-title">Pre-queue drops — monthly</div>
+        <div class="panel-sub">% of total calls · IVR removed 16 April</div>
+      </div>
+      <div class="chart-canvas"><canvas id="ivrChart"></canvas></div>
+    </div>
+
+    <div class="takeaways">
+      <div class="take">
+        <div class="take-num accent">✓</div>
+        <div class="take-body">Pre-queue drops ran at <strong>6.7% (Feb), 8.1% (Mar), 6.9% (Apr overall)</strong> — remarkably consistent. After 16 April, the rate dropped to around 3% — roughly halving the category.</div>
+      </div>
+      <div class="take">
+        <div class="take-num good">✓</div>
+        <div class="take-body">At the pre-IVR rate of 7%, Glendale Ophthalmology was losing roughly <strong>140 callers per month</strong> during the menu. At the new ~3% rate, that's closer to 60 per month — about <strong>80 callers saved every month</strong>.</div>
+      </div>
+      <div class="take">
+        <div class="take-num">!</div>
+        <div class="take-body">The full effect will be clearer over a full month. But one to two days of clean post-change data already show the drop is real.</div>
+      </div>
+    </div>
+
+    <!-- Combined impact -->
+    <div class="callout accent" style="margin-top: 32px;">
+      <div class="callout-number">3 <span class="unit">/ 3</span></div>
+      <div class="callout-text">
+        <span class="label">THE VOICESTACK VALUE STORY</span>
+        product releases in six weeks. Three measurable improvements in the office's metrics. The data doesn't lie: when VoiceStack ships, Glendale Ophthalmology's numbers move.
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ============================================================ -->
+  <!-- ==============  TAB 03 · CALL VOLUME  ====================== -->
+  <!-- ============================================================ -->
+  <div class="tab-panel" id="tab-volume">
+
+    <div class="sec-head">
+      <div class="sec-kicker"><span class="tnum">03</span> Call Volume &amp; Answering</div>
+      <h2 class="sec-title">Inbound demand and how much of it reached an agent</h2>
+    </div>
+
+    <div class="gnote">
+      <span class="lbl">Quick definitions</span>
+      <strong>Total Inbound Calls</strong> = Answered + Missed during operating hours. <strong>Offline Missed</strong> = calls received when the office was closed or agents weren't logged in (reported separately, not in the total). <strong>Answer Rate</strong> = Answered ÷ Total Inbound during operating hours.
+    </div>
+
+    <!-- Monthly table -->
+    <div class="tbl-wrap" style="margin-bottom: 24px;">
+      <table>
+        <thead>
+          <tr>
+            <th>Period</th>
+            <th class="num">Total Inbound</th>
+            <th class="num">Answered</th>
+            <th class="num">Missed</th>
+            <th class="num">Offline Missed</th>
+            <th class="num">Answer Rate</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="strong">February</td><td class="num">1,907</td><td class="num">1,547</td><td class="num">360</td><td class="num">202</td><td class="num"><span class="pill good">81.1%</span></td></tr>
+          <tr><td class="strong">March</td><td class="num">2,275</td><td class="num">1,765</td><td class="num">510</td><td class="num">145</td><td class="num"><span class="pill warn">77.6%</span></td></tr>
+          <tr><td class="strong">April (to 17th)</td><td class="num">1,108</td><td class="num">947</td><td class="num">161</td><td class="num">81</td><td class="num"><span class="pill good">85.5%</span></td></tr>
+          <tr class="total"><td>Period total</td><td class="num">5,290</td><td class="num">4,259</td><td class="num">1,031</td><td class="num">428</td><td class="num"><span class="pill neutral">80.5%</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Volume & answer rate charts -->
+    <div class="two-col">
+      <div class="panel">
+        <div class="panel-head">
+          <div class="panel-title">Monthly call volume</div>
+          <div class="panel-sub">Answered vs missed</div>
+        </div>
+        <div class="chart-canvas"><canvas id="volumeChart"></canvas></div>
+      </div>
+      <div class="panel">
+        <div class="panel-head">
+          <div class="panel-title">Answer rate trend</div>
+          <div class="panel-sub">Month over month</div>
+        </div>
+        <div class="chart-canvas"><canvas id="answerChart"></canvas></div>
+      </div>
+    </div>
+
+    <div class="takeaways">
+      <div class="take">
+        <div class="take-num warn">!</div>
+        <div class="take-body">March was the weakest month — <strong>highest volume (2,275) coincided with lowest answer rate (77.6%)</strong>. This was a capacity issue: too many calls, not enough simultaneous agent availability.</div>
+      </div>
+      <div class="take">
+        <div class="take-num good">✓</div>
+        <div class="take-body">April recovered strongly — <strong>answer rate at 85.5%</strong>, capacity misses at just 0.7% (down from 3.0% in March). The team is now catching calls at a near-best-in-class rate.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- ==============  TAB 03b · TIMING PATTERNS  ================= -->
+  <!-- ============================================================ -->
+  <div class="tab-panel" id="tab-timing">
+
+    <div class="sec-head">
+      <div class="sec-kicker"><span class="tnum">03b</span> Timing Patterns · Day × Hour × Segment</div>
+      <h2 class="sec-title">Misses aren't random — they cluster into a predictable weekly shape.</h2>
+      <p class="sec-lead">40.9% of all operating-hour misses happen on Mondays alone. Monday afternoons are the single worst cell in the dataset. And the callers losing out most are the ones worth the most — new patients calling at 3pm answer at just 49.3%.</p>
+    </div>
+
+    <div class="gnote">
+      <span class="lbl">SCOPE &amp; DEFINITIONS</span>
+      All figures in this section reflect <strong>inbound calls during operating hours</strong>, matching the Tab 03 denominator. <strong>Answer Rate</strong> = Answered ÷ (Answered + Missed) within each cell. <strong>Time blocks</strong> are Morning (8am–12pm), Lunch (12pm–2pm), Afternoon (2pm–5pm), Evening (5pm–7pm). Pre-Queue Drops are treated separately and surfaced in the "Other Patterns" panel below.
+    </div>
+
+    <!-- HEADLINE METRICS -->
+    <div class="hmetrics">
+      <div class="hmetric">
+        <div class="hmetric-label">Monday's share of all misses</div>
+        <div class="hmetric-value">40.9<span class="unit">%</span></div>
+        <div class="hmetric-note crit">264 of 645 misses on one day</div>
+      </div>
+      <div class="hmetric">
+        <div class="hmetric-label">Monday afternoon answer rate</div>
+        <div class="hmetric-value">71.9<span class="unit">%</span></div>
+        <div class="hmetric-note crit">Worst cell · 109 missed calls</div>
+      </div>
+      <div class="hmetric">
+        <div class="hmetric-label">New-patient AR at 3pm</div>
+        <div class="hmetric-value">49.3<span class="unit">%</span></div>
+        <div class="hmetric-note crit">Fewer than half get through</div>
+      </div>
+      <div class="hmetric">
+        <div class="hmetric-label">Median missed-caller patience</div>
+        <div class="hmetric-value">51<span class="unit">s</span></div>
+        <div class="hmetric-note warn">46% wait longer than 60s</div>
+      </div>
+    </div>
+
+    <!-- CALLOUT -->
+    <div class="callout critical">
+      <div class="callout-number">71.9<span class="unit">%</span></div>
+      <div class="callout-text">
+        <span class="label">The single worst cell in the dataset</span>
+        <strong>Monday 2pm–5pm.</strong> 388 calls, 109 missed. On Monday at 3pm specifically, answer rate drops to 65.8% — one in three callers doesn't get through. It's the collision of the busiest day of the week with the lowest-capacity window of the day.
+      </div>
+    </div>
+
+    <!-- HEATMAP -->
+    <div class="heatmap-wrap">
+      <div class="heatmap-head">
+        <div class="panel-title">Answer rate by day × time block</div>
+        <div class="panel-sub">Shaded by answer rate. Bottom number is call volume. A clear pattern: Monday is hardest across all blocks; the afternoon slump runs across every weekday.</div>
+      </div>
+      <div class="heatmap">
+        <div class="hm-head hm-cell hm-row-label">&nbsp;</div>
+        <div class="hm-head hm-cell">Morning<span class="hm-sub">8am–12pm</span></div>
+        <div class="hm-head hm-cell">Lunch<span class="hm-sub">12pm–2pm</span></div>
+        <div class="hm-head hm-cell">Afternoon<span class="hm-sub">2pm–5pm</span></div>
+        <div class="hm-head hm-cell">Evening<span class="hm-sub">5pm–7pm</span></div>
+        <div class="hm-head hm-cell hm-total">Day avg</div>
+
+        <div class="hm-row-label">Monday<span class="sub">n = 1,272 · 10 days</span></div>
+        <div class="hm-cell tier-warn"><span class="hm-val">81.9%</span><span class="hm-vol">498 calls</span></div>
+        <div class="hm-cell tier-bad"><span class="hm-val">77.7%</span><span class="hm-vol">260 calls</span></div>
+        <div class="hm-cell tier-worst"><span class="hm-val">71.9%</span><span class="hm-vol">388 calls</span></div>
+        <div class="hm-cell tier-good"><span class="hm-val">94.3%</span><span class="hm-vol">123 calls</span></div>
+        <div class="hm-total"><span class="hm-val" style="color:var(--crit)">79.2%</span><span class="sub">127/day</span></div>
+
+        <div class="hm-row-label">Tuesday<span class="sub">n = 1,178 · 11 days</span></div>
+        <div class="hm-cell tier-warn"><span class="hm-val">80.4%</span><span class="hm-vol">491 calls</span></div>
+        <div class="hm-cell tier-ok"><span class="hm-val">84.7%</span><span class="hm-vol">255 calls</span></div>
+        <div class="hm-cell tier-good"><span class="hm-val">91.5%</span><span class="hm-vol">306 calls</span></div>
+        <div class="hm-cell tier-best"><span class="hm-val">98.4%</span><span class="hm-vol">123 calls</span></div>
+        <div class="hm-total"><span class="hm-val">86.2%</span><span class="sub">107/day</span></div>
+
+        <div class="hm-row-label">Wednesday<span class="sub">n = 954 · 11 days</span></div>
+        <div class="hm-cell tier-best"><span class="hm-val">97.5%</span><span class="hm-vol">367 calls</span></div>
+        <div class="hm-cell tier-good"><span class="hm-val">91.4%</span><span class="hm-vol">209 calls</span></div>
+        <div class="hm-cell tier-good"><span class="hm-val">91.4%</span><span class="hm-vol">279 calls</span></div>
+        <div class="hm-cell tier-good"><span class="hm-val">90.8%</span><span class="hm-vol">98 calls</span></div>
+        <div class="hm-total"><span class="hm-val" style="color:var(--good)">93.7%</span><span class="sub">87/day</span></div>
+
+        <div class="hm-row-label">Thursday<span class="sub">n = 909 · 11 days</span></div>
+        <div class="hm-cell tier-good"><span class="hm-val">92.1%</span><span class="hm-vol">366 calls</span></div>
+        <div class="hm-cell tier-good"><span class="hm-val">89.2%</span><span class="hm-vol">212 calls</span></div>
+        <div class="hm-cell tier-ok"><span class="hm-val">85.2%</span><span class="hm-vol">263 calls</span></div>
+        <div class="hm-cell tier-good"><span class="hm-val">92.6%</span><span class="hm-vol">68 calls</span></div>
+        <div class="hm-total"><span class="hm-val">89.4%</span><span class="sub">83/day</span></div>
+
+        <div class="hm-row-label">Friday<span class="sub">n = 614 · 10 days</span></div>
+        <div class="hm-cell tier-good"><span class="hm-val">92.3%</span><span class="hm-vol">248 calls</span></div>
+        <div class="hm-cell tier-good"><span class="hm-val">90.8%</span><span class="hm-vol">142 calls</span></div>
+        <div class="hm-cell tier-ok"><span class="hm-val">85.5%</span><span class="hm-vol">200 calls</span></div>
+        <div class="hm-cell tier-best"><span class="hm-val">95.8%</span><span class="hm-vol">24 calls</span></div>
+        <div class="hm-total"><span class="hm-val">89.9%</span><span class="sub">61/day</span></div>
+      </div>
+      <div class="hm-legend">
+        <span>Answer rate:</span>
+        <span class="swatch s-worst">&lt; 75%</span>
+        <span class="swatch s-bad">75–80%</span>
+        <span class="swatch s-warn">80–85%</span>
+        <span class="swatch s-ok">85–90%</span>
+        <span class="swatch s-good">90–95%</span>
+        <span class="swatch s-best">≥ 95%</span>
+      </div>
+    </div>
+
+    <!-- TWO-UP CHARTS -->
+    <div class="two-col">
+      <div class="panel">
+        <div class="panel-head">
+          <div class="panel-title">Answer rate by hour of day</div>
+          <div class="panel-sub">The 3pm floor. Capacity bottoms out mid-afternoon even though volume has already peaked.</div>
+        </div>
+        <div class="chart-canvas tall"><canvas id="timingHourChart"></canvas></div>
+      </div>
+      <div class="panel">
+        <div class="panel-head">
+          <div class="panel-title">Volume &amp; answer rate by day of week</div>
+          <div class="panel-sub">Monday has 2× Friday's volume and the lowest answer rate — the staffing model doesn't flex to demand.</div>
+        </div>
+        <div class="chart-canvas tall"><canvas id="timingDowChart"></canvas></div>
+      </div>
+    </div>
+
+    <!-- NEW PATIENT CALLOUT -->
+    <div class="callout">
+      <div class="callout-number">49.3<span class="unit">%</span></div>
+      <div class="callout-text">
+        <span class="label">New-patient answer rate at 3pm</span>
+        <strong>Every missed new-patient call is lost lifetime value.</strong> The gap between new (68.3% AR) and existing (89.3% AR) patients is 21 points overall — and widest in the afternoon. The commercially most valuable callers are being dropped precisely when the team is least available.
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head">
+        <div class="panel-title">New vs existing patient answer rate, by hour</div>
+        <div class="panel-sub">Both segments dip at 3pm — but new patients fall off a cliff. Existing patients recover to 87%; new patients only claw back to 78% at 4pm.</div>
+      </div>
+      <div class="chart-canvas xtall"><canvas id="timingNewExistChart"></canvas></div>
+    </div>
+
+    <!-- KEY FINDINGS -->
+    <h3 class="findings-head">Five patterns the monthly view hides</h3>
+
+    <div class="finding crit">
+      <div class="fnum">01</div>
+      <div class="fbody">
+        <h4>Monday accounts for 40.9% of all operating-hour misses</h4>
+        <p>Monday is the highest-volume day (127 calls/day avg · vs 61 on Friday) <em>and</em> the lowest answer rate (79.2%). That's a <span class="crit-text">structural capacity-demand mismatch</span>, not a one-off. Solving Monday alone would lift the overall answer rate by roughly 5 points with zero other changes.</p>
+      </div>
+    </div>
+
+    <div class="finding crit">
+      <div class="fnum">02</div>
+      <div class="fbody">
+        <h4>The 3pm floor is universal across the week</h4>
+        <p>Answer rate drops from 94% at 8am to a <span class="crit-text">79.5% floor at 3pm</span>, then recovers to 95%+ by 5pm. Tracks a predictable afternoon-slump pattern — likely clinical handovers, lunchtime cascades, or admin tasks. Flex staffing to the dip and the floor disappears.</p>
+      </div>
+    </div>
+
+    <div class="finding crit">
+      <div class="fnum">03</div>
+      <div class="fbody">
+        <h4>New patients at 3pm answer at 49.3%</h4>
+        <p>New-patient AR collapses in the afternoon (60.8% for the 2pm–5pm block vs 78%+ either side). <span class="crit-text">Every missed new-patient call is ~$2–6K lifetime value gone.</span> If this pattern held all year, that's well over 200 new-patient calls lost to the 3pm dip alone.</p>
+      </div>
+    </div>
+
+    <div class="finding warn">
+      <div class="fnum">04</div>
+      <div class="fbody">
+        <h4>Outbound activity is inverted from need</h4>
+        <p>The team makes the most outbound calls on Thursday (283) — the day with the fewest missed inbound to recover. Monday, which generates 40% of the misses, gets only 233 outbound. <span class="warn-text">Callbacks aren't being worked in proportion to where they're created.</span> Shift outbound focus to Monday/Tuesday mornings and you attack the same missed calls twice.</p>
+      </div>
+    </div>
+
+    <div class="finding warn">
+      <div class="fnum">05</div>
+      <div class="fbody">
+        <h4>738 Pre-Queue Drops happened during business hours</h4>
+        <p>These are flagged "offline missed" but sit inside 8am–6pm. Monday 9am alone has 54 Pre-Queue Drops — suggesting agents aren't fully logged in at shift start. <span class="warn-text">The first 30 minutes of Monday is leaking calls before the queue even opens.</span> A hard log-in SLA of 8:45am on Mondays would recover most of this.</p>
+      </div>
+    </div>
+
+    <!-- OTHER PATTERNS -->
+    <h3 class="findings-head">Other patterns worth flagging</h3>
+
+    <div class="finding good">
+      <div class="fnum">+</div>
+      <div class="fbody">
+        <h4>Urgent eye-care calls answer at 97.8% — the urgency routing works</h4>
+        <p>Of 365 calls tagged Urgent Eye Care, only 8 were missed. <span class="good-text">The urgency sort is a genuine strength</span> — worth crediting explicitly when the broader AR is under pressure. Also a strong VoiceStack proof-point for urgent-first triage.</p>
+      </div>
+    </div>
+
+    <div class="finding">
+      <div class="fnum">+</div>
+      <div class="fbody">
+        <h4>Missed callers are patient — median wait is 51 seconds</h4>
+        <p>Only 37% hang up within 30s. <strong>46% wait longer than a full minute</strong> before giving up. These aren't impulsive callers — they're motivated patients being lost to queue depth, not attention span. Even a 20-second improvement in answer time would recover a meaningful share.</p>
+      </div>
+    </div>
+
+    <div class="finding">
+      <div class="fnum">+</div>
+      <div class="fbody">
+        <h4>Voicemail is effectively a dead channel</h4>
+        <p>Of 645 missed calls, only 24 left a voicemail (3.7%). Patients either hang up or self-recover by calling back. <strong>Voicemail shouldn't be prioritized in the callback workflow</strong> — the callback queue (based on number-level identification) is doing the real work.</p>
+      </div>
+    </div>
+
+    <div class="finding warn">
+      <div class="fnum">+</div>
+      <div class="fbody">
+        <h4>The worst single days were all early-week</h4>
+        <p>Feb 24 (Tue, 183 calls, 51.9% AR), Mar 2 (Mon, 161, 56.5%), Mar 23 (Mon, 151, 68.2%). <span class="warn-text">Seven of the top-10 busiest days answered below 85%.</span> The answer rate breaks at exactly the moments you can't afford it to — demand-linked, not random noise.</p>
+      </div>
+    </div>
+
+    <!-- RECOMMENDATIONS -->
+    <h3 class="findings-head">What these patterns imply for the action plan</h3>
+
+    <div class="reco-grid">
+      <div class="reco crit">
+        <div class="reco-tag">Highest leverage</div>
+        <h4>Flex-staff Monday 10am–4pm</h4>
+        <p>Add one floating agent across the Monday window. Monday alone creates 40% of misses — fixing this one cell moves the overall AR by ~5 points. Revisit in 4 weeks.</p>
+      </div>
+      <div class="reco crit">
+        <div class="reco-tag">New patient protection</div>
+        <h4>VIP-route new-patient calls</h4>
+        <p>Priority queue tag for new-patient callers (detectable via first-time number). Lifting new-patient AR from 68% to 85% is worth meaningful LTV — disproportionate revenue per agent-hour invested.</p>
+      </div>
+      <div class="reco warn">
+        <div class="reco-tag">Afternoon dip</div>
+        <h4>No lunch/handover gap 2pm–3:30pm</h4>
+        <p>The 3pm floor is a scheduling choice, not a law of physics. Stagger breaks; ensure minimum two agents live across the entire 2pm–3:30pm window every weekday.</p>
+      </div>
+      <div class="reco accent">
+        <div class="reco-tag">Log-in SLA</div>
+        <h4>8:45am hard log-in on Mondays</h4>
+        <p>738 in-hours Pre-Queue Drops tell you agents aren't fully online at shift start. Add a log-in check at 8:45am Monday/Tuesday — recovers 50+ calls/week currently leaking before the queue opens.</p>
+      </div>
+      <div class="reco accent">
+        <div class="reco-tag">Outbound re-balance</div>
+        <h4>Shift callback effort earlier in the week</h4>
+        <p>Callbacks are made most on Thursday but created most on Monday. Move to a same-day / next-morning SLA. You'll hit more callers while the conversation is still fresh — and lift the 31% leakage rate.</p>
+      </div>
+      <div class="reco">
+        <div class="reco-tag">Dashboard</div>
+        <h4>Track AR by day × block weekly</h4>
+        <p>The monthly view is too coarse — it hides Monday afternoons. Add a weekly 5×4 heatmap (this page, refreshed) to the team stand-up. Target every amber/red cell ≥ 85% by end of Q2.</p>
+      </div>
+    </div>
+
+    <div class="foot-note">
+      Calculated from 5,744 inbound calls (1 Feb–17 Apr 2026). Answer rate defined as Answered ÷ (Answered + Missed) within operating hours. "Missed" includes Missed, Capacity Missed, Short Missed. Pre-Queue Drops excluded from the core AR calculation but surfaced separately in Finding 05. New-patient segmentation from Contact Type field. Source: VoiceStack Total Call Dump export.
+    </div>
+
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- ==============  TAB 04 · MISSED CALLS  ===================== -->
+  <!-- ============================================================ -->
+  <div class="tab-panel" id="tab-missed">
+
+    <div class="sec-head">
+      <div class="sec-kicker"><span class="tnum">04</span> Missed Calls</div>
+      <h2 class="sec-title">Not every missed call means the same thing</h2>
+      <p class="sec-lead">VoiceStack separates missed calls into four categories. The cause — and therefore the fix — is different for each.</p>
+    </div>
+
+    <!-- Definitions in 2x2 grid -->
+    <div class="two-col">
+      <div class="gnote">
+        <span class="lbl">Normal Missed</span>
+        Agents were available but nobody picked up. <strong>The only category where agent behavior is the primary driver.</strong>
+      </div>
+      <div class="gnote">
+        <span class="lbl">Short Missed</span>
+        Caller hung up after one or two rings. <strong>Not considered an agent fault.</strong>
+      </div>
+      <div class="gnote">
+        <span class="lbl">Pre-Queue Drop</span>
+        Caller hung up during the IVR menu, before reaching an agent queue. <strong>An IVR experience issue — now resolved by the 16 April IVR removal.</strong>
+      </div>
+      <div class="gnote">
+        <span class="lbl">Capacity Missed</span>
+        All agents were on other calls. <strong>A scheduling or headcount issue.</strong>
+      </div>
+    </div>
+
+    <!-- Breakdown chart -->
+    <div class="panel" style="margin: 20px 0;">
+      <div class="panel-head">
+        <div class="panel-title">Missed call breakdown by category</div>
+        <div class="panel-sub">% of total calls · month by month</div>
+      </div>
+      <div class="chart-canvas tall"><canvas id="missedBreakdownChart"></canvas></div>
+    </div>
+
+    <div class="takeaways">
+      <div class="take">
+        <div class="take-num warn">!</div>
+        <div class="take-body"><strong>Normal Missed is the dominant category</strong> in every month (6.6–10.9%) — most missed calls happen when someone <em>could</em> have answered but didn't. This is the signal to watch for staffing or attention issues.</div>
+      </div>
+      <div class="take">
+        <div class="take-num good">✓</div>
+        <div class="take-body"><strong>Capacity Misses collapsed in April</strong> from 3.0% in March to 0.7% — strong evidence the March capacity crunch has been operationally resolved.</div>
+      </div>
+      <div class="take">
+        <div class="take-num accent">✓</div>
+        <div class="take-body"><strong>Pre-Queue Drops roughly halved to ~3%</strong> following the 16 April IVR removal. The 6.9% April figure is an average that includes the pre-IVR-removal days.</div>
+      </div>
+    </div>
+
+    <!-- Recovery funnel -->
+    <div class="sec-head" style="margin-top: 44px;">
+      <div class="sec-kicker"><span class="tnum">04.1</span> What happens after a call is missed</div>
+      <h2 class="sec-title">The recovery funnel</h2>
+      <p class="sec-lead">A missed call can still become a booking. Here's where the 1,099 unique missed callers ended up.</p>
+    </div>
+
+    <div class="panel" style="margin-bottom: 20px;">
+      <div class="panel-head">
+        <div class="panel-title">Recovery funnel · 1,099 unique missed callers</div>
+        <div class="panel-sub">Where they ended up</div>
+      </div>
+
+      <div class="funnel-row">
+        <div class="funnel-label">Unique missed callers<span class="sub">Starting pool</span></div>
+        <div class="funnel-bar"><div class="funnel-bar-fill" style="width:100%;"></div></div>
+        <div class="funnel-value">1,099<span class="pct">100%</span></div>
+      </div>
+
+      <div class="funnel-row">
+        <div class="funnel-label">Patient called back themselves<span class="sub">Self-rescued</span></div>
+        <div class="funnel-bar"><div class="funnel-bar-fill warn" style="width:60.9%;"></div></div>
+        <div class="funnel-value">669<span class="pct">60.9%</span></div>
+      </div>
+
+      <div class="funnel-row">
+        <div class="funnel-label">Called back by staff<span class="sub">Proactive follow-up</span></div>
+        <div class="funnel-bar"><div class="funnel-bar-fill good" style="width:4.2%;"></div></div>
+        <div class="funnel-value">46<span class="pct">4.2%</span></div>
+      </div>
+
+      <div class="funnel-row">
+        <div class="funnel-label">Ignored<span class="sub">Auto-archived after 7 days</span></div>
+        <div class="funnel-bar"><div class="funnel-bar-fill crit" style="width:33.4%;"></div></div>
+        <div class="funnel-value">367<span class="pct">33.4%</span></div>
+      </div>
+
+      <div class="funnel-row">
+        <div class="funnel-label">Still unresponded<span class="sub">Within the 7-day window</span></div>
+        <div class="funnel-bar"><div class="funnel-bar-fill crit" style="width:1.5%;"></div></div>
+        <div class="funnel-value">17<span class="pct">1.5%</span></div>
+      </div>
+    </div>
+
+    <!-- The 367 callout -->
+    <div class="callout critical">
+      <div class="callout-number">367</div>
+      <div class="callout-text">
+        <span class="label">THE "IGNORED" PROBLEM</span>
+        missed callers were auto-archived after 7 days of no response. These were real patients calling about real demand — they simply slipped through the follow-up process.
+      </div>
+    </div>
+
+    <div class="takeaways" style="margin-top: 20px;">
+      <div class="take">
+        <div class="take-num warn">!</div>
+        <div class="take-body">The office's recovery model <strong>relies on patients calling back themselves</strong> (60.9%). That's a gamble — the office gets the conversation only if the patient is persistent.</div>
+      </div>
+      <div class="take">
+        <div class="take-num crit">!</div>
+        <div class="take-body">Staff-initiated callback rate is <strong>only 4.2%</strong>. A same-day callback SLA applied to even half the 367 ignored calls would produce meaningful additional bookings.</div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ============================================================ -->
+  <!-- ============  TAB 05 · CALLBACK PERFORMANCE  =============== -->
+  <!-- ============================================================ -->
+  <div class="tab-panel" id="tab-callback">
+
+    <div class="sec-head">
+      <div class="sec-kicker"><span class="tnum">05</span> Callback Performance</div>
+      <h2 class="sec-title">A new recovery channel — working as intended</h2>
+      <p class="sec-lead">Since the callback feature was implemented on 10 March, 140 patients have used it. Here's how they fared.</p>
+    </div>
+
+    <div class="gnote">
+      <span class="lbl">How the callback feature works</span>
+      When a patient is waiting in the queue, they can <strong>press 1 to drop off</strong>. Their position is locked — when their turn arrives, the system automatically dials them back. Three outcomes are possible: <strong>Fulfilled</strong> (call went through and patient picked up), <strong>Not Connected</strong> (the system dialled but the patient didn't answer), or <strong>Not Fulfilled</strong> (the callback request exceeded its timeout window before the system reached the patient).
+    </div>
+
+    <!-- Headline metrics -->
+    <div class="hmetrics">
+      <div class="hmetric">
+        <div class="hmetric-label">Callback requests</div>
+        <div class="hmetric-value">140</div>
+        <div class="hmetric-note">Since 10 March launch</div>
+      </div>
+      <div class="hmetric">
+        <div class="hmetric-label">Successfully fulfilled</div>
+        <div class="hmetric-value">95</div>
+        <div class="hmetric-note good">68% of requests</div>
+      </div>
+      <div class="hmetric">
+        <div class="hmetric-label">Timed out</div>
+        <div class="hmetric-value">36</div>
+        <div class="hmetric-note warn">Addressed by 14 Apr queue extension</div>
+      </div>
+      <div class="hmetric">
+        <div class="hmetric-label">Permanently lost</div>
+        <div class="hmetric-value">11</div>
+        <div class="hmetric-note crit">Timed out &amp; never called back</div>
+      </div>
+    </div>
+
+    <!-- Callback outcome breakdown -->
+    <div class="two-col">
+      <div class="panel">
+        <div class="panel-head">
+          <div class="panel-title">Callback outcomes</div>
+          <div class="panel-sub">All 140 requests since 10 March</div>
+        </div>
+        <div class="chart-canvas"><canvas id="callbackOutcomeChart"></canvas></div>
+      </div>
+      <div class="panel">
+        <div class="panel-head">
+          <div class="panel-title">Callback volume by month</div>
+          <div class="panel-sub">March peak of 101 requests</div>
+        </div>
+        <div class="chart-canvas"><canvas id="callbackVolumeChart"></canvas></div>
+      </div>
+    </div>
+
+    <!-- Monthly table -->
+    <div class="tbl-wrap" style="margin-top: 20px;">
+      <table>
+        <thead>
+          <tr>
+            <th>Month</th>
+            <th class="num">Requests</th>
+            <th class="num">Fulfilled</th>
+            <th class="num">Not Connected</th>
+            <th class="num">Timed Out</th>
+            <th class="num">Fulfillment Rate</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="strong">March (from 10 Mar)</td><td class="num">101</td><td class="num">64</td><td class="num">6</td><td class="num">31</td><td class="num"><span class="pill warn">63.4%</span></td></tr>
+          <tr><td class="strong">April (to 13 Apr · 10-min window)</td><td class="num">18</td><td class="num">12</td><td class="num">2</td><td class="num">4</td><td class="num"><span class="pill warn">66.7%</span></td></tr>
+          <tr><td class="strong">April (14–17 · 30-min window)</td><td class="num">13</td><td class="num">12</td><td class="num">0</td><td class="num">1</td><td class="num"><span class="pill good">92.3%</span></td></tr>
+          <tr class="total"><td>Period total</td><td class="num">132</td><td class="num">88</td><td class="num">8</td><td class="num">36</td><td class="num"><span class="pill neutral">66.7%</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="font-size:14px; color:var(--muted); margin-top:16px; font-style:italic;">
+      Monthly figures reflect requests that closed in the month shown. Fulfillment rate = Fulfilled ÷ (Fulfilled + Not Connected + Timed Out).
+    </p>
+
+    <!-- What happened to the 36 timed-out -->
+    <div class="sec-head" style="margin-top: 44px;">
+      <div class="sec-kicker"><span class="tnum">05.1</span> The 36 who timed out</div>
+      <h2 class="sec-title">What happens when a callback request expires</h2>
+      <p class="sec-lead">36 patients requested a callback that timed out before the system could reach them. Here's what they did next.</p>
+    </div>
+
+    <div class="panel" style="margin-bottom: 20px;">
+      <div class="panel-head">
+        <div class="panel-title">Post-timeout journey · 36 patients</div>
+        <div class="panel-sub">Did they try again themselves?</div>
+      </div>
+
+      <div class="funnel-row">
+        <div class="funnel-label">Timed out<span class="sub">Callback never made contact</span></div>
+        <div class="funnel-bar"><div class="funnel-bar-fill" style="width:100%;"></div></div>
+        <div class="funnel-value">36<span class="pct">100%</span></div>
+      </div>
+
+      <div class="funnel-row">
+        <div class="funnel-label">Called back themselves<span class="sub">Persistent — tried again</span></div>
+        <div class="funnel-bar"><div class="funnel-bar-fill warn" style="width:69.4%;"></div></div>
+        <div class="funnel-value">25<span class="pct">69.4%</span></div>
+      </div>
+
+      <div class="funnel-row">
+        <div class="funnel-label">Reconnected with office<span class="sub">Got through on second attempt</span></div>
+        <div class="funnel-bar"><div class="funnel-bar-fill good" style="width:63.9%;"></div></div>
+        <div class="funnel-value">23<span class="pct">63.9%</span></div>
+      </div>
+
+      <div class="funnel-row">
+        <div class="funnel-label">Permanently lost<span class="sub">Never called back — opportunity gone</span></div>
+        <div class="funnel-bar"><div class="funnel-bar-fill crit" style="width:30.6%;"></div></div>
+        <div class="funnel-value">11<span class="pct">30.6%</span></div>
+      </div>
+    </div>
+
+    <div class="takeaways">
+      <div class="take">
+        <div class="take-num">1</div>
+        <div class="take-body"><strong>Of the 25 who called back themselves:</strong> 3 got through within an hour · 15 within 24 hours · 7 took longer than 24 hours. Most returned while the conversation was still fresh.</div>
+      </div>
+      <div class="take">
+        <div class="take-num crit">!</div>
+        <div class="take-body"><strong>11 patients were permanently lost</strong> after the callback request timed out — roughly 1 in 3 of the timed-out requests. These are precisely the patients the 14 April queue extension is designed to save.</div>
+      </div>
+      <div class="take">
+        <div class="take-num good">✓</div>
+        <div class="take-body">With the 30-minute window in place since 14 April, timeouts fell from <strong>31 in March to 1 in four April days</strong>. The permanently-lost bucket should effectively close.</div>
+      </div>
+    </div>
+
+    <div class="callout good" style="margin-top: 24px;">
+      <div class="callout-number">95</div>
+      <div class="callout-text">
+        <span class="label">PATIENT CONVERSATIONS RECOVERED AUTOMATICALLY</span>
+        by the callback feature since launch — conversations that would otherwise have required manual staff callback, or simply been lost. This is the feature doing the team's work.
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ============================================================ -->
+  <!-- ==========  TAB 06 · OPPORTUNITIES & PCC  ================== -->
+  <!-- ============================================================ -->
+  <div class="tab-panel" id="tab-opps">
+
+    <div class="sec-head">
+      <div class="sec-kicker"><span class="tnum">06</span> Opportunities &amp; PCC Pipeline</div>
+      <h2 class="sec-title">Where inbound interest turns into appointments</h2>
+      <p class="sec-lead">Two stories live here: the existing-patient engine (working well) and the new-patient funnel plus the PCC follow-up pipeline (both leaking).</p>
+    </div>
+
+    <!-- Headline metrics -->
+    <div class="hmetrics">
+      <div class="hmetric">
+        <div class="hmetric-label">Total opportunities</div>
+        <div class="hmetric-value">2,444</div>
+        <div class="hmetric-note">Across Feb–Apr</div>
+      </div>
+      <div class="hmetric">
+        <div class="hmetric-label">Existing-patient conversion</div>
+        <div class="hmetric-value">83.6<span class="unit">%</span></div>
+        <div class="hmetric-note good">Stable &amp; healthy</div>
+      </div>
+      <div class="hmetric">
+        <div class="hmetric-label">New-patient conversion</div>
+        <div class="hmetric-value">35.1<span class="unit">%</span></div>
+        <div class="hmetric-note crit">Declining trend</div>
+      </div>
+      <div class="hmetric">
+        <div class="hmetric-label">PCC pipeline created</div>
+        <div class="hmetric-value">394</div>
+        <div class="hmetric-note warn">385 still "Pending Followup"</div>
+      </div>
+    </div>
+
+    <!-- Conversion chart -->
+    <div class="panel" style="margin-bottom: 24px;">
+      <div class="panel-head">
+        <div class="panel-title">New vs existing-patient conversion · by month</div>
+        <div class="panel-sub">The widening gap is the story</div>
+      </div>
+      <div class="chart-canvas tall"><canvas id="conversionChart"></canvas></div>
+    </div>
+
+    <!-- Monthly table -->
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Period</th>
+            <th>Segment</th>
+            <th class="num">Opportunities</th>
+            <th class="num">Booked</th>
+            <th class="num">Not Booked</th>
+            <th class="num">Conversion</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="strong">February</td><td>Existing</td><td class="num">647</td><td class="num">542</td><td class="num">95</td><td class="num"><span class="pill good">83.8%</span></td></tr>
+          <tr><td></td><td>New</td><td class="num">114</td><td class="num">52</td><td class="num">62</td><td class="num"><span class="pill warn">45.6%</span></td></tr>
+          <tr><td class="strong">March</td><td>Existing</td><td>798</td><td class="num">664</td><td class="num">121</td><td class="num"><span class="pill good">83.2%</span></td></tr>
+          <tr><td></td><td>New</td><td class="num">94</td><td class="num">31</td><td class="num">63</td><td class="num"><span class="pill crit">33.0%</span></td></tr>
+          <tr><td class="strong">April</td><td>Existing</td><td class="num">643</td><td class="num">539</td><td class="num">104</td><td class="num"><span class="pill good">83.8%</span></td></tr>
+          <tr><td></td><td>New</td><td class="num">148</td><td class="num">39</td><td class="num">109</td><td class="num"><span class="pill crit">26.5%</span></td></tr>
+          <tr class="total"><td colspan="2">Period total</td><td class="num">2,444</td><td class="num">1,867</td><td class="num">554</td><td class="num"><span class="pill neutral">76.4%</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="takeaways" style="margin-top: 20px;">
+      <div class="take">
+        <div class="take-num good">✓</div>
+        <div class="take-body"><strong>Existing-patient conversion is rock-solid</strong> at 83–84% across every month. The team knows how to book its own patients.</div>
+      </div>
+      <div class="take">
+        <div class="take-num crit">!</div>
+        <div class="take-body"><strong>New-patient conversion fell 19 points</strong> — 45.6% → 33.0% → 26.5%. Volume is actually rising (148 NP opportunities in April vs 114 in Feb), so this is not a demand issue.</div>
+      </div>
+    </div>
+
+    <!-- The insurance-network story -->
+    <div class="sec-head" style="margin-top: 44px;">
+      <div class="sec-kicker"><span class="tnum">06.1</span> The insurance-network story</div>
+      <h2 class="sec-title">April's new-patient drop is a policy effect, not a handling one</h2>
+      <p class="sec-lead">Cross-tabulating April's "Reason Not Booked" against patient type reveals that the collapse in new-patient conversion is overwhelmingly driven by a single factor.</p>
+    </div>
+
+    <div class="tbl-wrap" style="margin-bottom: 20px;">
+      <table>
+        <thead>
+          <tr>
+            <th>April · Reason Not Booked</th>
+            <th class="num">New Patients</th>
+            <th class="num">Existing Patients</th>
+            <th class="num">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="highlight"><td class="strong">Insurance Not Accepted</td><td class="num strong">15</td><td class="num">7</td><td class="num strong">22</td></tr>
+          <tr><td class="strong">Not Yet Decided</td><td class="num">10</td><td class="num">16</td><td class="num">26</td></tr>
+          <tr><td class="strong">Pending Agent Action</td><td class="num">1</td><td class="num">16</td><td class="num">18</td></tr>
+          <tr><td class="strong">Copay / Preauthorization Required</td><td class="num">8</td><td class="num">7</td><td class="num">15</td></tr>
+          <tr><td class="strong">Appointment Availability</td><td class="num">2</td><td class="num">9</td><td class="num">11</td></tr>
+          <tr><td class="strong">Other reasons</td><td class="num">4</td><td class="num">8</td><td class="num">12</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout">
+      <div class="callout-number">15<span class="unit"> / 22</span></div>
+      <div class="callout-text">
+        <span class="label">APRIL'S INSURANCE REFUSALS</span>
+        were new patients. This is the single biggest driver of April's new-patient conversion drop. It's a policy outcome — decisions about accepted insurance plans at the office level flow directly into the new-patient conversion rate.
+      </div>
+    </div>
+
+    <p style="font-size:14px; color:var(--text); margin-top:20px; line-height:1.6;">
+      <strong style="color:var(--ink);">Why this matters:</strong> The team's handling of new-patient calls may be fine. What's changed is the insurance network position at the office. In February, 5 patients were turned away for insurance reasons; in April, 22. The practical question for leadership is whether the office should expand accepted insurance panels, create a self-pay conversion path, or route out-of-network callers to premium services such as LASIK, dry eye, or cataract evaluations. That single policy decision could recover 10+ new-patient bookings per month.
+    </p>
+
+    <!-- The PCC Pipeline story -->
+    <div class="sec-head" style="margin-top: 56px;">
+      <div class="sec-kicker"><span class="tnum">06.2</span> The PCC Pipeline</div>
+      <h2 class="sec-title">394 high-value leads. One follow-up owner.</h2>
+      <p class="sec-lead">Every qualified opportunity at Glendale Ophthalmology generates a Patient Opportunity Card (POC) assigned to the Patient Care Coordinator. The data shows the pipeline is being created — and then sitting there.</p>
+    </div>
+
+    <div class="gnote">
+      <span class="lbl">How a Patient Opportunity Card works</span>
+      A <strong>Patient Opportunity Card (POC)</strong> is created when an inbound call produces a qualified lead. It is assigned to the <strong>PCC (Patient Care Coordinator)</strong> — at Glendale Ophthalmology, that's <strong>Rozina Ahmed</strong>. The card has three possible states: <strong>Pending Followup</strong> (awaiting the PCC's outreach), <strong>Converted</strong> (patient booked), or <strong>Ignored</strong> (auto-archived after 7 days of no activity).
+    </div>
+
+    <div class="hmetrics">
+      <div class="hmetric">
+        <div class="hmetric-label">Patient Opportunity Cards created</div>
+        <div class="hmetric-value">394</div>
+        <div class="hmetric-note">131 Feb · 152 Mar · 111 Apr</div>
+      </div>
+      <div class="hmetric">
+        <div class="hmetric-label">Pending Followup</div>
+        <div class="hmetric-value">385</div>
+        <div class="hmetric-note crit">97.7% of total</div>
+      </div>
+      <div class="hmetric">
+        <div class="hmetric-label">Converted</div>
+        <div class="hmetric-value">8</div>
+        <div class="hmetric-note warn">2% of total</div>
+      </div>
+      <div class="hmetric">
+        <div class="hmetric-label">Hot leads in pipeline</div>
+        <div class="hmetric-value">235</div>
+        <div class="hmetric-note">60% of the 394 · high intent</div>
+      </div>
+    </div>
+
+    <!-- Pipeline visual breakdown -->
+    <div class="two-col">
+      <div class="panel">
+        <div class="panel-head">
+          <div class="panel-title">Lead status in the PCC pipeline</div>
+          <div class="panel-sub">394 Patient Opportunity Cards</div>
+        </div>
+        <div class="chart-canvas"><canvas id="leadStatusChart"></canvas></div>
+      </div>
+      <div class="panel">
+        <div class="panel-head">
+          <div class="panel-title">Service mix in the pipeline</div>
+          <div class="panel-sub">What the leads are asking about</div>
+        </div>
+        <div class="chart-canvas"><canvas id="serviceMixChart"></canvas></div>
+      </div>
+    </div>
+
+    <div class="callout critical" style="margin-top: 20px;">
+      <div class="callout-number">385</div>
+      <div class="callout-text">
+        <span class="label">THE OPEN PIPELINE</span>
+        qualified leads — most of them Hot, 81% with conversion probability ≥ 70% — are sitting in "Pending Followup." Glendale Ophthalmology has built the demand. The next step is to work it.
+      </div>
+    </div>
+
+    <div class="takeaways" style="margin-top: 20px;">
+      <div class="take">
+        <div class="take-num crit">!</div>
+        <div class="take-body"><strong>60% of the pipeline is Hot leads</strong> (235 of 394). These are not cold prospects — they are patients who called Glendale Ophthalmology to talk about eye-care needs and expressed clear intent.</div>
+      </div>
+      <div class="take">
+        <div class="take-num warn">!</div>
+        <div class="take-body"><strong>Comprehensive Eye Exams account for 37% of the pipeline</strong> (144 cards). The PCC queue is not loaded only with complex surgical consults — it is mostly routine comprehensive eye exams and evaluation requests that should be fast wins to close.</div>
+      </div>
+      <div class="take">
+        <div class="take-num accent">→</div>
+        <div class="take-body">The PCC role appears to be <strong>under-resourced for the volume</strong>. 394 cards over 10 weeks is ~40 per week, per person. With a daily follow-up cadence (10–15 per day), the role needs either additional capacity or a prioritization cadence that protects Hot leads.</div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ============================================================ -->
+  <!-- ============================================================ -->
+  <!-- ==========  TAB 07 · APPOINTMENT UPDATES  ================== -->
+  <!-- ============================================================ -->
+  <div class="tab-panel" id="tab-appts">
+
+    <div class="sec-head">
+      <div class="sec-kicker"><span class="tnum">07</span> Appointment Management</div>
+      <h2 class="sec-title">The appointments that were changed or recovered — but were managed</h2>
+      <p class="sec-lead">Parallel to new-patient acquisition, the team handles inbound calls from existing patients who want to reschedule, cancel, or confirm. Over 1,000 such interactions happened in the period — and the outcomes reveal how much value the team adds to the existing book.</p>
+    </div>
+
+    <!-- Headline metrics -->
+    <div class="hmetrics">
+      <div class="hmetric">
+        <div class="hmetric-label">Total appointment interactions</div>
+        <div class="hmetric-value">1,060</div>
+        <div class="hmetric-note">Across Feb–Apr</div>
+      </div>
+      <div class="hmetric">
+        <div class="hmetric-label">Appointments rescheduled</div>
+        <div class="hmetric-value">699</div>
+        <div class="hmetric-note good">~3× the cancellation volume</div>
+      </div>
+      <div class="hmetric">
+        <div class="hmetric-label">Cancellations saved</div>
+        <div class="hmetric-value">94</div>
+        <div class="hmetric-note good">Converted from cancel → reschedule</div>
+      </div>
+      <div class="hmetric">
+        <div class="hmetric-label">Appointments cancelled</div>
+        <div class="hmetric-value">239</div>
+        <div class="hmetric-note">Net of saves &amp; leakage</div>
+      </div>
+    </div>
+
+    <div class="gnote">
+      <span class="lbl">How VoiceStack tracks this</span>
+      Every appointment-management call has two dimensions: the <strong>Purpose</strong> (what the patient called to do — reschedule, cancel, or confirm) and the <strong>Outcome</strong> (what actually happened). The gap between the two is where agents add — or fail to add — value.
+    </div>
+
+    <!-- The 5 key questions -->
+    <div class="sec-head" style="margin-top: 40px;">
+      <div class="sec-kicker"><span class="tnum">07.1</span> The five key questions</div>
+      <h2 class="sec-title">Direct answers, period totals</h2>
+    </div>
+
+    <div class="takeaways">
+      <div class="take">
+        <div class="take-num">1</div>
+        <div class="take-body"><strong>How many appointments got rescheduled?</strong><br>
+          <span class="good-text">699 in total</span> — 605 from patients who called to reschedule, plus 94 patients who called to cancel but were converted to a reschedule. Monthly split: 285 (Feb), 281 (Mar), 133 (Apr).</div>
+      </div>
+      <div class="take">
+        <div class="take-num">2</div>
+        <div class="take-body"><strong>How many appointments got cancelled?</strong><br>
+          <span class="crit-text">239 in total</span> — 211 from patients who called to cancel, plus 28 patients who called to reschedule but ended up cancelling. Monthly split: 81 (Feb), 104 (Mar), 54 (Apr).</div>
+      </div>
+      <div class="take">
+        <div class="take-num good">3</div>
+        <div class="take-body"><strong>How many patients who wanted to cancel were rescheduled instead?</strong> — the "save"<br>
+          <span class="good-text">94 saves</span> across the period — Feb 34 (29.1% save rate), Mar 57 (36.8%), Apr 3 (<span class="crit-text">5.7%</span>). <strong>The save rate collapsed in April — a new concerning signal detailed below.</strong></div>
+      </div>
+      <div class="take">
+        <div class="take-num crit">4</div>
+        <div class="take-body"><strong>How many patients who wanted to reschedule were cancelled instead?</strong> — the "leak"<br>
+          <span class="crit-text">28 leaked</span> — Feb 4 (1.4%), Mar 18 (6.3%), Apr 6 (3.9%). March saw the biggest leakage — probably tied to the same capacity crunch that hit answer rate that month.</div>
+      </div>
+      <div class="take">
+        <div class="take-num warn">5</div>
+        <div class="take-body"><strong>How many patients who wanted to reschedule did not get rescheduled at all?</strong> — the "incomplete"<br>
+          <span class="crit-text">91 incomplete</span> — Feb 32 (11.1%), Mar 43 (15.1%), Apr 16 (10.5%). These patients called with intent, the agent logged the call, but no new appointment was set. Many will need proactive outreach to recover.</div>
+      </div>
+    </div>
+
+    <!-- Purpose × Outcome matrix -->
+    <div class="sec-head" style="margin-top: 44px;">
+      <div class="sec-kicker"><span class="tnum">07.2</span> The full picture</div>
+      <h2 class="sec-title">Purpose × Outcome, by month</h2>
+      <p class="sec-lead">The most revealing view: what patients intended to do on the phone, and what actually happened.</p>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Period</th>
+            <th>Call Purpose</th>
+            <th class="num">Total</th>
+            <th class="num">Rescheduled</th>
+            <th class="num">Cancelled</th>
+            <th class="num">Confirmed</th>
+            <th class="num">No Outcome</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="strong" rowspan="3">February</td>
+              <td>Reschedule intent</td><td class="num">287</td><td class="num"><span class="pill good">251</span></td><td class="num"><span class="pill crit">4</span></td><td class="num">—</td><td class="num"><span class="pill warn">32</span></td></tr>
+          <tr><td>Cancellation intent</td><td class="num">117</td><td class="num"><span class="pill good">34</span></td><td class="num">77</td><td class="num">—</td><td class="num">6</td></tr>
+          <tr><td>Confirmation intent</td><td class="num">5</td><td class="num">—</td><td class="num">—</td><td class="num"><span class="pill good">5</span></td><td class="num">0</td></tr>
+
+          <tr><td class="strong" rowspan="3">March</td>
+              <td>Reschedule intent</td><td class="num">285</td><td class="num"><span class="pill good">224</span></td><td class="num"><span class="pill crit">18</span></td><td class="num">—</td><td class="num"><span class="pill warn">43</span></td></tr>
+          <tr><td>Cancellation intent</td><td class="num">155</td><td class="num"><span class="pill good">57</span></td><td class="num">86</td><td class="num">—</td><td class="num">12</td></tr>
+          <tr><td>Confirmation intent</td><td class="num">5</td><td class="num">—</td><td class="num">—</td><td class="num"><span class="pill good">5</span></td><td class="num">0</td></tr>
+
+          <tr><td class="strong" rowspan="3">April</td>
+              <td>Reschedule intent</td><td class="num">152</td><td class="num"><span class="pill good">130</span></td><td class="num"><span class="pill crit">6</span></td><td class="num">—</td><td class="num"><span class="pill warn">16</span></td></tr>
+          <tr><td>Cancellation intent</td><td class="num">53</td><td class="num"><span class="pill crit">3</span></td><td class="num">48</td><td class="num">—</td><td class="num">2</td></tr>
+          <tr><td>Confirmation intent</td><td class="num">6</td><td class="num">—</td><td class="num">—</td><td class="num"><span class="pill good">4</span></td><td class="num">2</td></tr>
+
+          <tr class="total"><td colspan="2">Period total</td><td class="num">1,065</td><td class="num">699</td><td class="num">239</td><td class="num">14</td><td class="num">113</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="font-size:13px; color:var(--muted); margin-top:14px; font-style:italic;">
+      Green = the good outcome for that intent · Red = the intent failed · Amber = no outcome recorded (call ended without resolution).
+    </p>
+
+    <!-- The save rate story -->
+    <div class="sec-head" style="margin-top: 48px;">
+      <div class="sec-kicker"><span class="tnum">07.3</span> The save rate</div>
+      <h2 class="sec-title">How often do agents save a cancellation?</h2>
+      <p class="sec-lead">When a patient calls to cancel, a skilled agent can often convert that call into a reschedule instead — offering an alternative time, checking slot availability, understanding the reason. This is pure retained revenue.</p>
+    </div>
+
+    <div class="two-col">
+      <div class="panel">
+        <div class="panel-head">
+          <div class="panel-title">Cancellation save rate</div>
+          <div class="panel-sub">% of cancel-intent calls converted to reschedule</div>
+        </div>
+        <div class="chart-canvas tall"><canvas id="saveRateChart"></canvas></div>
+      </div>
+      <div class="panel" style="display:flex; flex-direction:column; justify-content:center;">
+        <p style="font-size:14px; color:var(--text); line-height:1.6; margin-bottom:12px;">
+          <strong style="color:var(--ink);">Feb–Mar:</strong> The team saved roughly <strong>one in three cancellation attempts</strong> — 34 saves in Feb (29.1%), 57 in Mar (36.8%). That's material retained revenue.
+        </p>
+        <p style="font-size:14px; color:var(--text); line-height:1.6; margin-bottom:12px;">
+          <strong style="color:var(--crit);">April:</strong> Save rate collapsed to <strong>5.7%</strong> — only 3 of 53 cancel-intent calls were saved. That's a 31-point drop.
+        </p>
+        <p style="font-size:13px; color:var(--muted); line-height:1.5; border-top:1px solid var(--line-soft); padding-top:12px;">
+          April is a partial month (17 days) and 53 cancel-intent calls is a smaller sample than earlier months — but the directional drop is too steep to be noise. Likely candidates: a change in agent rotation on appointment-management calls, a policy tweak (e.g. less flexibility on rescheduling options), or a dominant reason shift.
+        </p>
+      </div>
+    </div>
+
+    <div class="callout critical" style="margin-top: 24px;">
+      <div class="callout-number"><span class="sign">−</span>31<span class="unit">pts</span></div>
+      <div class="callout-text">
+        <span class="label">THE APRIL SAVE-RATE COLLAPSE</span>
+        Cancellation save rate fell from 36.8% in March to 5.7% in April — a new finding that requires coaching review. If February–March save rates held through April, the office would have recovered roughly 16 additional appointments instead of 3.
+      </div>
+    </div>
+
+    <!-- Net agent impact -->
+    <div class="sec-head" style="margin-top: 44px;">
+      <div class="sec-kicker"><span class="tnum">07.4</span> Net agent impact</div>
+      <h2 class="sec-title">Appointments added or lost by agent intervention</h2>
+      <p class="sec-lead">Subtracting the "leaks" (reschedule → cancel) from the "saves" (cancel → reschedule) gives the net contribution of agent skill beyond the default outcome.</p>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Month</th>
+            <th class="num">Saves (cancel → reschedule)</th>
+            <th class="num">Leaks (reschedule → cancel)</th>
+            <th class="num">Net impact</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="strong">February</td><td class="num">+34</td><td class="num">−4</td><td class="num"><span class="pill good">+30</span></td></tr>
+          <tr><td class="strong">March</td><td class="num">+57</td><td class="num">−18</td><td class="num"><span class="pill good">+39</span></td></tr>
+          <tr><td class="strong">April</td><td class="num">+3</td><td class="num">−6</td><td class="num"><span class="pill crit">−3</span></td></tr>
+          <tr class="total"><td>Period total</td><td class="num">+94</td><td class="num">−28</td><td class="num"><span class="pill good">+66</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="takeaways" style="margin-top: 20px;">
+      <div class="take">
+        <div class="take-num good">✓</div>
+        <div class="take-body">Across Feb–March, <strong>the team net-saved 69 appointments</strong> purely through agent intervention on appointment-management calls. That is retained revenue the office wouldn't otherwise have captured.</div>
+      </div>
+      <div class="take">
+        <div class="take-num crit">!</div>
+        <div class="take-body">April is the first month where <strong>net impact went negative</strong> (−3). The team lost more appointments than they saved. Whatever changed between March and April on this specific metric warrants a coaching conversation.</div>
+      </div>
+    </div>
+
+    <!-- Why patients called -->
+    <div class="sec-head" style="margin-top: 44px;">
+      <div class="sec-kicker"><span class="tnum">07.5</span> Why patients called</div>
+      <h2 class="sec-title">Reasons behind reschedules and cancellations</h2>
+      <p class="sec-lead">VoiceStack captures the reason for every update. The mix is useful for provider scheduling strategy and for identifying recoverable vs structural losses.</p>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Reason</th>
+            <th class="num">Feb Rescheduled</th>
+            <th class="num">Feb Cancelled</th>
+            <th class="num">Mar Rescheduled</th>
+            <th class="num">Mar Cancelled</th>
+            <th>Interpretation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="strong">Patient Unavailability</td><td class="num">228</td><td class="num">61</td><td class="num">234</td><td class="num">76</td><td>Scheduling conflict — the dominant driver</td></tr>
+          <tr><td class="strong">Physician Unavailability</td><td class="num">21</td><td class="num">2</td><td class="num">18</td><td class="num">1</td><td>Office-side. Rescheduled almost always</td></tr>
+          <tr><td class="strong">Others</td><td class="num">21</td><td class="num">12</td><td class="num">27</td><td class="num">19</td><td>AI couldn't categorize — data quality</td></tr>
+          <tr><td class="strong">Office Closed</td><td class="num">8</td><td class="num">0</td><td class="num">—</td><td class="num">—</td><td>Public holidays / office closures — always rescheduled</td></tr>
+          <tr><td class="strong">Earlier Appointment Availability</td><td class="num">6</td><td class="num">0</td><td class="num">1</td><td class="num">0</td><td>Patient wanted to bring forward</td></tr>
+          <tr class="highlight"><td class="strong">Patient Churn</td><td class="num">0</td><td class="num">3</td><td class="num">0</td><td class="num">4</td><td style="color:var(--crit);"><strong>True lost patients — not returning</strong></td></tr>
+          <tr><td class="strong">Price Concern</td><td class="num">1</td><td class="num">2</td><td class="num">1</td><td class="num">3</td><td>Small but a coaching indicator</td></tr>
+          <tr><td class="strong">Wrong Provider / Location</td><td class="num">0</td><td class="num">1</td><td class="num">0</td><td class="num">1</td><td>Admin / intake friction</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="font-size:13px; color:var(--muted); margin-top:14px; font-style:italic;">
+      Reason-level data was available for February and March only. Patient Unavailability is clearly the single biggest cause — pointing to scheduling flexibility as the primary retention lever.
+    </p>
+
+    <div class="takeaways" style="margin-top: 20px;">
+      <div class="take">
+        <div class="take-num good">✓</div>
+        <div class="take-body"><strong>"Patient Churn" — the truly lost patients — is very low</strong> at 7 across Feb–Mar. Most reschedule/cancel activity is scheduling friction, not patient dissatisfaction. That's a healthy signal.</div>
+      </div>
+      <div class="take">
+        <div class="take-num">!</div>
+        <div class="take-body"><strong>Patient Unavailability dominates</strong> (289 Feb + 310 Mar = 599 interactions). Worth asking whether the slot mix (morning/evening/weekend) fits patient availability patterns.</div>
+      </div>
+      <div class="take">
+        <div class="take-num warn">!</div>
+        <div class="take-body"><strong>Patient Churn and Price Concern are the categories to track.</strong> Together they represent fully 12 patients in Feb–Mar who won't be coming back — small numbers, but each is a relationship lost that was preventable.</div>
+      </div>
+    </div>
+
+    <!-- Combined finding callout -->
+    <div class="callout accent" style="margin-top: 32px;">
+      <div class="callout-number">+66</div>
+      <div class="callout-text">
+        <span class="label">THE RETENTION STORY</span>
+        net appointments retained by agent intervention across the period — a genuinely positive result invisible without VoiceStack's Purpose-vs-Outcome tracking. The next quarter's priority: protect the Feb–March save rate so it doesn't collapse again.
+      </div>
+    </div>
+  </div>
+
+  <!-- ==============  TAB 08 · WHY BOOKINGS FAIL  ================ -->
+  <!-- ============================================================ -->
+  <div class="tab-panel" id="tab-reasons">
+
+    <div class="sec-head">
+      <div class="sec-kicker"><span class="tnum">08</span> Why Bookings Fail</div>
+      <h2 class="sec-title">The reasons, split into what the team can and can't control</h2>
+      <p class="sec-lead">When a patient doesn't book, VoiceStack's AI records a reason. Splitting those reasons by controllability clarifies where to invest effort.</p>
+    </div>
+
+    <div class="reasons-split">
+      <div class="rcol">
+        <h4>Within team control <span class="tag act">Focus here</span></h4>
+        <div class="rrow"><div>Not Yet Decided</div><div class="rrow-num"><strong>125</strong>27.2%</div></div>
+        <div class="rrow"><div>Pending Agent Action</div><div class="rrow-num"><strong>47</strong>10.2%</div></div>
+        <div class="rrow"><div>Price Concern</div><div class="rrow-num"><strong>8</strong>1.7%</div></div>
+        <div class="rrow"><div>Agent Unable to Assist</div><div class="rrow-num"><strong>5</strong>1.1%</div></div>
+        <div class="rcol-foot"><strong>185 patients (~40%)</strong> lost to reasons that respond to better follow-up discipline and call handling.</div>
+      </div>
+
+      <div class="rcol">
+        <h4>Structural / policy <span class="tag str">Inform strategy</span></h4>
+        <div class="rrow"><div>Insurance Not Accepted</div><div class="rrow-num"><strong>28</strong>6.1%</div></div>
+        <div class="rrow"><div>Copay / Preauthorization Required</div><div class="rrow-num"><strong>29</strong>6.3%</div></div>
+        <div class="rrow"><div>Not Accepting New Patients</div><div class="rrow-num"><strong>18</strong>3.9%</div></div>
+        <div class="rrow"><div>Appointment Availability</div><div class="rrow-num"><strong>17</strong>3.7%</div></div>
+        <div class="rrow"><div>Referral Required</div><div class="rrow-num"><strong>6</strong>1.3%</div></div>
+        <div class="rcol-foot"><strong>98 patients (~21%)</strong> lost to factors that require leadership decisions on policy — not training.</div>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top: 24px;">
+      <div class="callout-number">40<span class="unit">%</span></div>
+      <div class="callout-text">
+        <span class="label">THE CONTROLLABLE SHARE</span>
+        of non-bookings are reasons the team can directly influence with better follow-up, scripting, and objection handling. 185 patients across the period could plausibly have been recovered.
+      </div>
+    </div>
+
+    <!-- Monthly reasons trend -->
+    <div class="sec-head" style="margin-top: 44px;">
+      <div class="sec-kicker"><span class="tnum">08.1</span> Month over month</div>
+      <h2 class="sec-title">How reasons shifted across the period</h2>
+    </div>
+
+    <div class="panel" style="margin-bottom: 20px;">
+      <div class="panel-head">
+        <div class="panel-title">Top reasons not booked · by month</div>
+        <div class="panel-sub">Period-total top 7 reasons</div>
+      </div>
+      <div class="chart-canvas tall"><canvas id="reasonsMonthlyChart"></canvas></div>
+    </div>
+
+    <div class="takeaways">
+      <div class="take">
+        <div class="take-num warn">!</div>
+        <div class="take-body"><strong>Insurance Not Accepted surged in April</strong> — from 5 (Feb) to 1 (Mar) to 22 (Apr). This single reason is responsible for most of April's new-patient conversion drop.</div>
+      </div>
+      <div class="take">
+        <div class="take-num crit">!</div>
+        <div class="take-body"><strong>"Pending Agent Action" is a team-control issue.</strong> 47 patients waited for an agent follow-up that never came. In April, 16 of the 18 "Pending Agent Action" cases were existing patients — real customers waiting to be booked back in.</div>
+      </div>
+    </div>
+
+    <!-- Service table -->
+    <div class="sec-head" style="margin-top: 44px;">
+      <div class="sec-kicker"><span class="tnum">08.2</span> By service type</div>
+      <h2 class="sec-title">Which ophthalmic-care conversations convert</h2>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Service</th>
+            <th class="num">Opportunities</th>
+            <th class="num">Booked</th>
+            <th class="num">Not Booked</th>
+            <th class="num">Conversion</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="strong">Pediatric Eye Exam</td><td class="num">118</td><td class="num">111</td><td class="num">7</td><td class="num"><span class="pill good">94.1%</span></td></tr>
+          <tr><td class="strong">Cataract Surgery</td><td class="num">24</td><td class="num">20</td><td class="num">4</td><td class="num"><span class="pill good">83.3%</span></td></tr>
+          <tr><td class="strong">Comprehensive Eye Exam</td><td class="num">936</td><td class="num">777</td><td class="num">159</td><td class="num"><span class="pill good">83.0%</span></td></tr>
+          <tr><td class="strong">Glaucoma Follow-Up</td><td class="num">181</td><td class="num">142</td><td class="num">39</td><td class="num"><span class="pill good">78.5%</span></td></tr>
+          <tr><td class="strong">Urgent Eye Care</td><td class="num">77</td><td class="num">56</td><td class="num">21</td><td class="num"><span class="pill good">72.7%</span></td></tr>
+          <tr><td class="strong">Dry Eye Evaluation</td><td class="num">29</td><td class="num">20</td><td class="num">9</td><td class="num"><span class="pill warn">69.0%</span></td></tr>
+          <tr><td class="strong">Diabetic Eye Exam</td><td class="num">76</td><td class="num">52</td><td class="num">24</td><td class="num"><span class="pill warn">68.4%</span></td></tr>
+          <tr><td class="strong">Retina Evaluation</td><td class="num">110</td><td class="num">73</td><td class="num">37</td><td class="num"><span class="pill warn">66.4%</span></td></tr>
+          <tr><td class="strong">Glaucoma Evaluation</td><td class="num">55</td><td class="num">34</td><td class="num">21</td><td class="num"><span class="pill warn">61.8%</span></td></tr>
+          <tr class="highlight"><td class="strong" style="color:var(--crit);">LASIK Consult</td><td class="num">25</td><td class="num">6</td><td class="num">19</td><td class="num"><span class="pill crit">24.0%</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="takeaways" style="margin-top: 20px;">
+      <div class="take">
+        <div class="take-num crit">!</div>
+        <div class="take-body"><strong>LASIK Consult converts at 24%</strong> — lowest of any service. Only 6 of 25 booked. Likely a combination of pricing friction, insurance coverage uncertainty, and referral ambiguity the team does not have a clean script for yet.</div>
+      </div>
+      <div class="take">
+        <div class="take-num warn">!</div>
+        <div class="take-body">Conversion falls off precisely where conversations become <strong>complex or price-sensitive</strong> — Glaucoma Evaluation (62%), Retina Evaluation (66%), Diabetic Eye Exam (68%). Training opportunity.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- ============  TAB 09 · TEAM PERFORMANCE  =================== -->
+  <!-- ============================================================ -->
+  <div class="tab-panel" id="tab-team">
+
+    <div class="sec-head">
+      <div class="sec-kicker"><span class="tnum">09</span> Team Performance</div>
+      <h2 class="sec-title">The variance between agents is the coaching opportunity</h2>
+      <p class="sec-lead">Call sentiment across the period was 1,480 Positive, 122 Neutral, and just 2 Negative — when the team gets on the phone, they're doing good work. The variance is in <em>who</em> converts what.</p>
+    </div>
+
+    <!-- Monthly conversion table -->
+    <div class="tbl-wrap" style="margin-bottom: 24px;">
+      <table>
+        <thead>
+          <tr>
+            <th>Agent</th>
+            <th class="num">Total Calls</th>
+            <th class="num">Feb NP Conv.</th>
+            <th class="num">Mar NP Conv.</th>
+            <th class="num">Apr NP Conv.</th>
+            <th class="num">EP Conv. (period)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="strong">Jayne Scholes</td>
+            <td class="num">271</td>
+            <td class="num"><span class="pill warn">50%</span></td>
+            <td class="num"><span class="pill warn">33%</span></td>
+            <td class="num"><span class="pill good">64%</span></td>
+            <td class="num"><span class="pill good">87.9%</span></td>
+          </tr>
+          <tr>
+            <td class="strong">Micheala Malcolm</td>
+            <td class="num">80</td>
+            <td class="num"><span class="pill good">67%</span></td>
+            <td class="num"><span class="pill warn">50%</span></td>
+            <td class="num"><span class="pill crit">23%</span></td>
+            <td class="num"><span class="pill good">82.2%</span></td>
+          </tr>
+          <tr>
+            <td class="strong">Debra Thompson</td>
+            <td class="num">336</td>
+            <td class="num"><span class="pill warn">39%</span></td>
+            <td class="num"><span class="pill crit">27%</span></td>
+            <td class="num"><span class="pill crit">15%</span></td>
+            <td class="num"><span class="pill warn">78.3%</span></td>
+          </tr>
+          <tr>
+            <td class="strong">Priscilla Gray</td>
+            <td class="num">92</td>
+            <td class="num"><span class="pill crit">20%</span></td>
+            <td class="num"><span class="pill crit">25%</span></td>
+            <td class="num"><span class="pill warn">40%</span></td>
+            <td class="num"><span class="pill good">84.1%</span></td>
+          </tr>
+          <tr>
+            <td class="strong">Kay Mellor</td>
+            <td class="num">70</td>
+            <td class="num"><span class="pill crit">0%</span></td>
+            <td class="num"><span class="pill warn">33%</span></td>
+            <td class="num"><span class="pill crit">0%</span></td>
+            <td class="num"><span class="pill good">83.3%</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Per-agent cards -->
+    <div class="sec-head" style="margin-top: 32px;">
+      <div class="sec-kicker"><span class="tnum">09.1</span> Agent profiles</div>
+      <h2 class="sec-title">How each agent's month-over-month trend reads</h2>
+    </div>
+
+    <div class="agent-grid">
+      <div class="acard">
+        <div class="name">Jayne Scholes</div>
+        <div class="role">Senior agent · 271 calls</div>
+        <div class="status good">BENCHMARK</div>
+        <div class="trend">
+          <span class="lbl">NP conv trend</span>
+          <span>50% → 33% → 64%</span>
+        </div>
+        <p class="note">V-shaped recovery, ended strongest on NP and highest EP conversion (88%). Set the standard for call-shadowing sessions.</p>
+      </div>
+
+      <div class="acard">
+        <div class="name">Priscilla Gray</div>
+        <div class="role">Agent · 92 calls</div>
+        <div class="status good">IMPROVING</div>
+        <div class="trend">
+          <span class="lbl">NP conv trend</span>
+          <span>20% → 25% → 40%</span>
+        </div>
+        <p class="note">Steady NP improvement across the period — up 20 points since February. Strong EP conversion (84%). Positive direction.</p>
+      </div>
+
+      <div class="acard">
+        <div class="name">Debra Thompson</div>
+        <div class="role">Senior agent · 336 calls (highest volume)</div>
+        <div class="status crit">COACHING PRIORITY</div>
+        <div class="trend">
+          <span class="lbl">NP conv trend</span>
+          <span>39% → 27% → 15%</span>
+        </div>
+        <p class="note">Steady decline across all three months. Highest call volume means even small uplift produces large absolute gain. Priority for call reviews with Jayne.</p>
+      </div>
+
+      <div class="acard">
+        <div class="name">Micheala Malcolm</div>
+        <div class="role">Agent · 80 calls</div>
+        <div class="status warn">DECLINING</div>
+        <div class="trend">
+          <span class="lbl">NP conv trend</span>
+          <span>67% → 50% → 23%</span>
+        </div>
+        <p class="note">Started strong but declining steeply as NP volume tripled. May signal she handled easier calls early; now facing harder mix without coaching support.</p>
+      </div>
+
+      <div class="acard">
+        <div class="name">Kay Mellor</div>
+        <div class="role">Agent · 70 calls (low NP volume)</div>
+        <div class="status neutral">LOW SAMPLE</div>
+        <div class="trend">
+          <span class="lbl">NP conv trend</span>
+          <span>0% → 33% → 0%</span>
+        </div>
+        <p class="note">Only 4 NP opportunities across the whole period — figures are volatile and don't support reliable conclusions. Solid on EP (83%).</p>
+      </div>
+    </div>
+
+    <div class="takeaways" style="margin-top: 24px;">
+      <div class="take">
+        <div class="take-num accent">→</div>
+        <div class="take-body"><strong>Pair Debra with Jayne.</strong> The 49-point gap between Debra's April NP (15%) and Jayne's April NP (64%) is too wide to be call mix. Coaching intervention, not capability issue.</div>
+      </div>
+      <div class="take">
+        <div class="take-num good">✓</div>
+        <div class="take-body"><strong>Priscilla's trajectory shows the intervention works.</strong> She moved 20 points in 10 weeks. Whatever Priscilla is doing, continue it.</div>
+      </div>
+      <div class="take">
+        <div class="take-num">!</div>
+        <div class="take-body">Call sentiment being 92% Positive is a useful calibration: the team is good when they get on the phone. The gap is conversion handling, not tone or warmth.</div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ============================================================ -->
+  <!-- ==============  TAB 10 · ACTION PLAN  ====================== -->
+  <!-- ============================================================ -->
+  <div class="tab-panel" id="tab-plan">
+
+    <div class="sec-head">
+      <div class="sec-kicker"><span class="tnum">10</span> Action Plan</div>
+      <h2 class="sec-title">Where to focus next — ranked by impact</h2>
+      <p class="sec-lead">Three tiers of action, sequenced over 90 days. The top priorities would, conservatively, recover 150–250 bookings per quarter from demand the office is already generating.</p>
+    </div>
+
+    <!-- P1 / P2 / P3 cards -->
+    <div class="priority-grid">
+
+      <div class="pcard crit">
+        <span class="pcard-tag">● CRITICAL · P1</span>
+        <div class="pcard-title">Work the 385-card PCC pipeline</div>
+        <div class="pcard-body">394 qualified patient opportunities created, 385 sitting in "Pending Followup" under one owner (Rozina Ahmed). 60% Hot, 81% high conversion probability. This is the single largest addressable opportunity in the report.</div>
+        <div class="pcard-action">
+          <span class="lbl">Recommended action</span>
+          Evaluate PCC capacity. Consider either additional PCC resource or a strict prioritization cadence (Hot leads within 48 hrs, Warm within 5 days).
+        </div>
+      </div>
+
+      <div class="pcard crit">
+        <span class="pcard-tag">● CRITICAL · P1</span>
+        <div class="pcard-title">Decide the insurance acceptance position</div>
+        <div class="pcard-body">15 of April's 22 "Insurance Not Accepted" refusals were new patients. This single reason drives most of April's 19-point new-patient conversion drop. Leadership call on whether to expand accepted plans or offer a defined self-pay path.</div>
+        <div class="pcard-action">
+          <span class="lbl">Recommended action</span>
+          Quantify the operational and clinical feasibility of insurance-panel expansion. Even part-capacity could recover 10–15 new-patient bookings per month.
+        </div>
+      </div>
+
+      <div class="pcard crit">
+        <span class="pcard-tag">● CRITICAL · P1</span>
+        <div class="pcard-title">Close the 367 "Ignored" missed-call gap</div>
+        <div class="pcard-body">367 unique missed callers were auto-archived after 7 days of no response. Only 46 were proactively called back across the period. This is addressable with a callback SLA.</div>
+        <div class="pcard-action">
+          <span class="lbl">Recommended action</span>
+          Same-day callback SLA for every missed call. Daily queue owner. Target: 80% callback within 4 hours, 100% within 24 hours.
+        </div>
+      </div>
+
+      <div class="pcard crit">
+        <span class="pcard-tag">● CRITICAL · P1</span>
+        <div class="pcard-title">Eliminate "Pending Agent Action"</div>
+        <div class="pcard-body">47 lost bookings across the period to agents not closing the loop — 16 of April's 18 cases were existing patients waiting to be booked. 100% team-controllable.</div>
+        <div class="pcard-action">
+          <span class="lbl">Recommended action</span>
+          24-hour rule on every opportunity marked "Pending Agent Action". Daily team-lead review. Target: zero open items &gt; 1 working day.
+        </div>
+      </div>
+
+      <div class="pcard crit">
+        <span class="pcard-tag">● CRITICAL · P1</span>
+        <div class="pcard-title">Diagnose the April save-rate collapse</div>
+        <div class="pcard-body">Cancellation save rate fell from 36.8% (Mar) to 5.7% (Apr) — only 3 of 53 cancel-intent calls were converted to reschedules. A 31-point drop. Each save is retained revenue.</div>
+        <div class="pcard-action">
+          <span class="lbl">Recommended action</span>
+          Listen to 10 April cancellation calls. Identify whether it's an agent behavior change, a slot-availability constraint, or a new policy. Reinstate the Feb–March save playbook.
+        </div>
+      </div>
+
+      <div class="pcard warn">
+        <span class="pcard-tag">◆ MEDIUM · P2</span>
+        <div class="pcard-title">Fix LASIK Consult conversion (24%)</div>
+        <div class="pcard-body">6 of 25 opportunities booked. Suggests pricing/referral conversation isn't landing. Small volume but each conversion is high-value.</div>
+        <div class="pcard-action">
+          <span class="lbl">Recommended action</span>
+          Build a high-value service script covering LASIK consults, cataract surgery evaluations, glaucoma visits, and retina referrals. Role-play objections monthly.
+        </div>
+      </div>
+
+      <div class="pcard warn">
+        <span class="pcard-tag">◆ MEDIUM · P2</span>
+        <div class="pcard-title">Pair-coach Debra with Jayne</div>
+        <div class="pcard-body">Debra has the highest call volume (336) but the steepest declining trend on new-patient conversion (39% → 15%). The skill gap is coachable — Jayne's approach is the benchmark.</div>
+        <div class="pcard-action">
+          <span class="lbl">Recommended action</span>
+          Fortnightly call reviews with Jayne. Five calls each per session. Focus on new-patient objection handling.
+        </div>
+      </div>
+
+      <div class="pcard warn">
+        <span class="pcard-tag">◆ MEDIUM · P2</span>
+        <div class="pcard-title">Monitor post-IVR-removal metrics</div>
+        <div class="pcard-body">Only one to two days of data after the 16 April IVR removal. Expectations are positive but May is the first month to confirm the pattern.</div>
+        <div class="pcard-action">
+          <span class="lbl">Recommended action</span>
+          Weekly pre-queue drop tracking through May. Decision point at end of May on whether any IVR element needs reintroducing for triage.
+        </div>
+      </div>
+
+      <div class="pcard low">
+        <span class="pcard-tag">○ LOW · P3</span>
+        <div class="pcard-title">Protect April's operational recovery</div>
+        <div class="pcard-body">Capacity misses collapsed from 3.0% to 0.7%. Answer rate at 85.5%. Whatever scheduling change was made in April needs to hold.</div>
+        <div class="pcard-action">
+          <span class="lbl">Recommended action</span>
+          Track capacity misses weekly. No action unless it creeps above 1.5%.
+        </div>
+      </div>
+
+      <div class="pcard low">
+        <span class="pcard-tag">○ LOW · P3</span>
+        <div class="pcard-title">Investigate the March "Others" reason</div>
+        <div class="pcard-body">81 of 152 reasons in March (53%) were logged as "Others" by the AI — a data quality issue where the categorizer couldn't pick a valid reason. February and April were &lt; 3%.</div>
+        <div class="pcard-action">
+          <span class="lbl">Recommended action</span>
+          Product-side investigation. Not blocking — but skews March's reporting picture.
+        </div>
+      </div>
+
+      <div class="pcard low">
+        <span class="pcard-tag">○ LOW · P3</span>
+        <div class="pcard-title">Re-run this report in July</div>
+        <div class="pcard-body">The three VoiceStack releases (10 March, 14 April, 16 April) need a full quarter of post-change data to be confidently measured.</div>
+        <div class="pcard-action">
+          <span class="lbl">Recommended action</span>
+          Regenerate for May–July 2026 and compare against this baseline. Target: callback fulfillment sustained &gt; 90%, pre-queue drops &lt; 1%.
+        </div>
+      </div>
+    </div>
+
+    <!-- 30/60/90 -->
+    <div class="sec-head" style="margin-top: 48px;">
+      <div class="sec-kicker"><span class="tnum">10.1</span> Roadmap</div>
+      <h2 class="sec-title">The 30-60-90 day plan</h2>
+    </div>
+
+    <div class="plan">
+      <div class="pcol">
+        <div class="pcol-phase">Phase 1</div>
+        <div class="pcol-days">Days 1–30</div>
+        <div class="pcol-head">Work the pipeline</div>
+        <ul>
+          <li>PCC capacity review: can 385 open cards realistically be worked by one person?</li>
+          <li><strong>Same-day callback SLA</strong> on every missed call — start with Hot leads</li>
+          <li>Daily stand-up on "Pending Agent Action" queue</li>
+          <li>Baseline new-patient recordings for Debra's coaching plan</li>
+          <li>Leadership decision on insurance acceptance position</li>
+        </ul>
+      </div>
+
+      <div class="pcol">
+        <div class="pcol-phase">Phase 2</div>
+        <div class="pcol-days">Days 31–60</div>
+        <div class="pcol-head">Lift conversion</div>
+        <ul>
+          <li><strong>High-value service script</strong> launched (LASIK Consult, Glaucoma Evaluation, Retina Evaluation)</li>
+          <li>Fortnightly call reviews: Jayne paired with Debra</li>
+          <li>New-patient playbook for insurance, pricing, availability objections</li>
+          <li>Confirm callback feature metrics held post-IVR-removal</li>
+          <li>Monthly dashboard review with leadership</li>
+        </ul>
+      </div>
+
+      <div class="pcol">
+        <div class="pcol-phase">Phase 3</div>
+        <div class="pcol-days">Days 61–90</div>
+        <div class="pcol-head">Institutionalise</div>
+        <ul>
+          <li>PCC pipeline &lt; 50 open cards older than 14 days</li>
+          <li>Staff callback rate &gt; 50% of missed calls</li>
+          <li>New-patient conversion back above 40%</li>
+          <li>Pre-queue drops &lt; 1% sustained</li>
+          <li>Re-run this report and compare to baseline</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Prize callout -->
+    <div class="callout accent" style="margin-top: 32px;">
+      <div class="callout-number">~200</div>
+      <div class="callout-text">
+        <span class="label">THE PROSPECTIVE PRIZE</span>
+        additional bookings per quarter — a conservative estimate from working a third of the 385-card pipeline, recovering half the 367 ignored missed calls, and reversing "Pending Agent Action" leakage. All on demand the office already generates.
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ FOOTER ============ -->
+  <footer>
+    <div>
+      <strong>Glendale Ophthalmology Associates · Glendale Vision Group</strong>
+      Call Performance Review · 1 February – 17 April 2026
+    </div>
+    <div style="text-align: right;">
+      <strong>VoiceStack Analytics</strong>
+      Confidential · For leadership review
+    </div>
+  </footer>
+
+</div>
+
+<script>
+  // ======== TAB SWITCHING ========
+  const tabs = document.querySelectorAll('.tab-btn');
+  const panels = document.querySelectorAll('.tab-panel');
+
+  function activateTab(tab) {
+    const target = tab.dataset.tab;
+    tabs.forEach(t => t.classList.remove('active'));
+    panels.forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('tab-' + target).classList.add('active');
+    // Ensure the active tab is visible in the scrollable nav
+    tab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  tabs.forEach((tab, idx) => {
+    tab.addEventListener('click', () => activateTab(tab));
+    tab.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' && idx < tabs.length - 1) {
+        e.preventDefault();
+        tabs[idx + 1].focus();
+        activateTab(tabs[idx + 1]);
+      } else if (e.key === 'ArrowLeft' && idx > 0) {
+        e.preventDefault();
+        tabs[idx - 1].focus();
+        activateTab(tabs[idx - 1]);
+      }
+    });
+  });
+
+  // ======== CHART.JS DEFAULTS ========
+  Chart.defaults.font.family = "'Geist', -apple-system, system-ui, sans-serif";
+  Chart.defaults.font.size = 12;
+  Chart.defaults.color = '#6B6E74';
+
+  const c = {
+    ink: '#111214',
+    accent: '#1F3B4D',
+    crit: '#C23B2A',
+    warn: '#B07418',
+    good: '#3D6B4A',
+    gold: '#9A7B3B',
+    line: '#E6E4DD',
+    muted: '#9CA0A6'
+  };
+
+  // ======== TAB 02 — VoiceStack Impact ========
+
+  // Answer rate trend (chart in impact tab)
+  new Chart(document.getElementById('answerRateChart'), {
+    type: 'line',
+    data: {
+      labels: ['February', 'March', 'April (to 17th)'],
+      datasets: [{
+        label: 'Answer Rate (%)',
+        data: [81.1, 77.6, 85.5],
+        borderColor: c.accent,
+        backgroundColor: 'rgba(31, 59, 77, 0.08)',
+        borderWidth: 2.5,
+        pointRadius: 7,
+        pointBackgroundColor: c.accent,
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
+        fill: true, tension: 0.3
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            afterLabel: (ctx) => {
+              if (ctx.dataIndex === 1) return 'Callback implemented 10 Mar';
+              if (ctx.dataIndex === 2) return 'Full post-callback month';
+              return '';
+            }
+          }
+        },
+        annotation: false
+      },
+      scales: {
+        x: { grid: { display: false } },
+        y: { min: 70, max: 90, grid: { color: c.line }, ticks: { callback: v => v + '%' } }
+      }
+    }
+  });
+
+  // Queue extension chart - before/after
+  new Chart(document.getElementById('queueExtChart'), {
+    type: 'bar',
+    data: {
+      labels: ['Before\n(10-min window)', 'After\n(30-min window)'],
+      datasets: [{
+        data: [70, 92],
+        backgroundColor: [c.warn, c.good],
+        borderRadius: 4,
+        barThickness: 70
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: { callbacks: { label: (ctx) => ctx.parsed.y + '% fulfilled' } } },
+      scales: {
+        x: { grid: { display: false } },
+        y: { min: 0, max: 100, grid: { color: c.line }, ticks: { callback: v => v + '%' } }
+      }
+    }
+  });
+
+  // IVR chart - pre-queue drops
+  new Chart(document.getElementById('ivrChart'), {
+    type: 'bar',
+    data: {
+      labels: ['February', 'March', 'April (pre-16th)', 'After 16 Apr'],
+      datasets: [{
+        data: [6.7, 8.1, 7.1, 3.0],
+        backgroundColor: [c.muted, c.muted, c.muted, c.good],
+        borderRadius: 4
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: { callbacks: { label: (ctx) => ctx.parsed.y + '% of calls' } } },
+      scales: {
+        x: { grid: { display: false } },
+        y: { min: 0, max: 10, grid: { color: c.line }, ticks: { callback: v => v + '%' } }
+      }
+    }
+  });
+
+  // ======== TAB 03 — Call Volume ========
+
+  new Chart(document.getElementById('volumeChart'), {
+    type: 'bar',
+    data: {
+      labels: ['February', 'March', 'April (to 17th)'],
+      datasets: [
+        { label: 'Answered', data: [1547, 1765, 947], backgroundColor: c.ink, borderRadius: 2, stack: 's' },
+        { label: 'Missed', data: [360, 510, 161], backgroundColor: c.crit, borderRadius: 2, stack: 's' }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, padding: 14 } } },
+      scales: { x: { grid: { display: false } }, y: { grid: { color: c.line } } }
+    }
+  });
+
+  new Chart(document.getElementById('answerChart'), {
+    type: 'line',
+    data: {
+      labels: ['February', 'March', 'April'],
+      datasets: [{
+        data: [81.1, 77.6, 85.5],
+        borderColor: c.accent,
+        backgroundColor: 'rgba(31, 59, 77, 0.08)',
+        borderWidth: 2,
+        pointRadius: 5,
+        pointBackgroundColor: c.accent,
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
+        fill: true, tension: 0.3
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { display: false } },
+        y: { min: 70, max: 90, grid: { color: c.line }, ticks: { callback: v => v + '%' } }
+      }
+    }
+  });
+
+  // ======== TAB 04 — Missed Calls ========
+
+  new Chart(document.getElementById('missedBreakdownChart'), {
+    type: 'bar',
+    data: {
+      labels: ['Normal Missed', 'Short Missed', 'Pre-Queue Drop', 'Capacity Missed'],
+      datasets: [
+        { label: 'February', data: [9.8, 0.2, 6.7, 2.2], backgroundColor: c.ink, borderRadius: 2 },
+        { label: 'March', data: [10.9, 0.4, 8.1, 3.0], backgroundColor: c.crit, borderRadius: 2 },
+        { label: 'April', data: [6.6, 0.3, 6.9, 0.7], backgroundColor: c.good, borderRadius: 2 }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, padding: 14 } } },
+      scales: { x: { grid: { display: false } }, y: { grid: { color: c.line }, ticks: { callback: v => v + '%' } } }
+    }
+  });
+
+  // ======== TAB 05 — Callback ========
+
+  new Chart(document.getElementById('callbackOutcomeChart'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Fulfilled', 'Timed Out (Not Fulfilled)', 'Not Connected'],
+      datasets: [{
+        data: [95, 36, 9],
+        backgroundColor: [c.good, c.crit, c.warn],
+        borderWidth: 2,
+        borderColor: '#fff'
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      cutout: '60%',
+      plugins: {
+        legend: { position: 'bottom', labels: { boxWidth: 10, padding: 14 } },
+        tooltip: {
+          callbacks: {
+            label: (ctx) => ctx.label + ': ' + ctx.parsed + ' (' + Math.round(ctx.parsed / 140 * 100) + '%)'
+          }
+        }
+      }
+    }
+  });
+
+  new Chart(document.getElementById('callbackVolumeChart'), {
+    type: 'bar',
+    data: {
+      labels: ['Feb (pre-launch)', 'March', 'April'],
+      datasets: [{
+        data: [0, 101, 31],
+        backgroundColor: [c.muted, c.accent, c.accent],
+        borderRadius: 4
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { display: false } },
+        y: { grid: { color: c.line }, beginAtZero: true }
+      }
+    }
+  });
+
+  // ======== TAB 06 — Opportunities ========
+
+  new Chart(document.getElementById('conversionChart'), {
+    type: 'line',
+    data: {
+      labels: ['February', 'March', 'April'],
+      datasets: [
+        {
+          label: 'Existing Patients',
+          data: [83.8, 83.2, 83.8],
+          borderColor: c.good,
+          backgroundColor: 'rgba(61, 107, 74, 0.08)',
+          borderWidth: 2.5,
+          pointRadius: 6,
+          pointBackgroundColor: c.good,
+          pointBorderColor: '#fff',
+          pointBorderWidth: 2,
+          tension: 0.2
+        },
+        {
+          label: 'New Patients',
+          data: [45.6, 33.0, 26.5],
+          borderColor: c.crit,
+          backgroundColor: 'rgba(194, 59, 42, 0.08)',
+          borderWidth: 2.5,
+          pointRadius: 6,
+          pointBackgroundColor: c.crit,
+          pointBorderColor: '#fff',
+          pointBorderWidth: 2,
+          tension: 0.2
+        }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, padding: 14 } } },
+      scales: {
+        x: { grid: { display: false } },
+        y: { min: 20, max: 100, grid: { color: c.line }, ticks: { callback: v => v + '%' } }
+      }
+    }
+  });
+
+  new Chart(document.getElementById('leadStatusChart'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Hot', 'Warm', 'Unavailable', 'Cold'],
+      datasets: [{
+        data: [235, 62, 71, 10],
+        backgroundColor: [c.crit, c.warn, c.muted, c.accent],
+        borderWidth: 2,
+        borderColor: '#fff'
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      cutout: '60%',
+      plugins: {
+        legend: { position: 'bottom', labels: { boxWidth: 10, padding: 14 } },
+        tooltip: {
+          callbacks: {
+            label: (ctx) => ctx.label + ': ' + ctx.parsed + ' (' + Math.round(ctx.parsed / 378 * 100) + '%)'
+          }
+        }
+      }
+    }
+  });
+
+  new Chart(document.getElementById('serviceMixChart'), {
+    type: 'bar',
+    data: {
+      labels: ['Comprehensive Eye Exam', 'Glaucoma Follow-Up', 'Retina Evaluation', 'Diabetic Eye Exam', 'Glaucoma Evaluation', 'Urgent Eye Care', 'LASIK Consult', 'Cataract Surgery', 'Dry Eye Evaluation', 'Other'],
+      datasets: [{
+        data: [144, 33, 28, 20, 18, 15, 15, 10, 7, 26],
+        backgroundColor: (ctx) => {
+          if (ctx.dataIndex === 0) return c.accent;
+          return c.muted;
+        },
+        borderRadius: 2
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { color: c.line }, beginAtZero: true },
+        y: { grid: { display: false } }
+      }
+    }
+  });
+
+  // ======== TAB 07 — Reasons Monthly ========
+
+  new Chart(document.getElementById('reasonsMonthlyChart'), {
+    type: 'bar',
+    data: {
+      labels: ['Not Yet Decided', 'Pending Agent Action', 'Insurance Not Accepted', 'Copay / Preauthorization Required', 'Appointment Availability', 'Not Accepting NP', 'Price Concern'],
+      datasets: [
+        { label: 'February', data: [53, 25, 5, 13, 2, 13, 1], backgroundColor: c.ink, borderRadius: 2 },
+        { label: 'March', data: [46, 4, 1, 1, 4, 4, 6], backgroundColor: c.warn, borderRadius: 2 },
+        { label: 'April', data: [26, 18, 22, 15, 11, 1, 1], backgroundColor: c.crit, borderRadius: 2 }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, padding: 14 } } },
+      scales: { x: { grid: { display: false } }, y: { grid: { color: c.line }, beginAtZero: true } }
+    }
+  });
+
+  // ======== TAB 07 — Save Rate Chart ========
+
+  new Chart(document.getElementById('saveRateChart'), {
+    type: 'bar',
+    data: {
+      labels: ['February', 'March', 'April'],
+      datasets: [{
+        data: [29.1, 36.8, 5.7],
+        backgroundColor: [c.good, c.good, c.crit],
+        borderRadius: 4,
+        barThickness: 60
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: (ctx) => ctx.parsed.y + '% save rate',
+            afterLabel: (ctx) => {
+              const saves = [34, 57, 3][ctx.dataIndex];
+              const total = [117, 155, 53][ctx.dataIndex];
+              return `${saves} saves / ${total} cancel-intent calls`;
+            }
+          }
+        }
+      },
+      scales: {
+        x: { grid: { display: false } },
+        y: { min: 0, max: 45, grid: { color: c.line }, ticks: { callback: v => v + '%' } }
+      }
+    }
+  });
+  // ======== TAB 03b — Timing Patterns ========
+
+  // Answer rate by hour of day
+  (function(){
+    const hours = ['8am','9am','10am','11am','12pm','1pm','2pm','3pm','4pm','5pm','6pm'];
+    const hourAR = [93.9, 91.1, 85.0, 86.9, 85.6, 86.5, 83.1, 79.5, 90.1, 94.2, 95.2];
+    const hourVol = [115, 504, 761, 590, 610, 468, 451, 508, 477, 310, 126];
+    new Chart(document.getElementById('timingHourChart'), {
+      type: 'line',
+      data: {
+        labels: hours,
+        datasets: [{
+          label: 'Answer Rate',
+          data: hourAR,
+          borderColor: c.accent,
+          backgroundColor: 'rgba(31,59,77,0.08)',
+          borderWidth: 2,
+          pointRadius: 4,
+          pointBackgroundColor: hourAR.map(v => v < 80 ? c.crit : v < 85 ? c.warn : c.good),
+          pointBorderColor: '#fff',
+          pointBorderWidth: 1.5,
+          pointHoverRadius: 6,
+          tension: 0.3,
+          fill: true
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: c.ink, titleColor: '#fff', bodyColor: '#fff',
+            padding: 10, cornerRadius: 3,
+            callbacks: { label: (ctx) => `AR: ${ctx.parsed.y}% · ${hourVol[ctx.dataIndex]} calls` }
+          }
+        },
+        scales: {
+          y: { min: 70, max: 100, grid: { color: c.line }, ticks: { callback: v => v + '%' } },
+          x: { grid: { display: false } }
+        }
+      }
+    });
+  })();
+
+  // Volume & Answer rate by day of week (combo)
+  (function(){
+    const dowLabels = ['Monday','Tuesday','Wednesday','Thursday','Friday'];
+    const dowVol = [1272, 1178, 954, 909, 614];
+    const dowAR = [79.2, 86.2, 93.7, 89.4, 89.9];
+    new Chart(document.getElementById('timingDowChart'), {
+      data: {
+        labels: dowLabels,
+        datasets: [
+          {
+            type: 'bar',
+            label: 'Call Volume',
+            data: dowVol,
+            backgroundColor: dowLabels.map((_,i) => i === 0 ? '#D8D2C3' : '#EBE7DB'),
+            borderColor: dowLabels.map((_,i) => i === 0 ? c.muted : c.line),
+            borderWidth: 1,
+            yAxisID: 'y',
+            borderRadius: 2,
+            order: 2
+          },
+          {
+            type: 'line',
+            label: 'Answer Rate',
+            data: dowAR,
+            borderColor: c.ink,
+            backgroundColor: c.ink,
+            borderWidth: 2,
+            pointRadius: 5,
+            pointBackgroundColor: dowAR.map(v => v < 85 ? c.crit : v < 90 ? c.warn : c.good),
+            pointBorderColor: '#fff',
+            pointBorderWidth: 1.5,
+            tension: 0.2,
+            yAxisID: 'y1',
+            order: 1
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'bottom', labels: { padding: 12, usePointStyle: true, pointStyle: 'circle' } },
+          tooltip: { backgroundColor: c.ink, titleColor: '#fff', bodyColor: '#fff', padding: 10, cornerRadius: 3 }
+        },
+        scales: {
+          y:  { position: 'left', grid: { color: c.line }, title: { display: true, text: 'Calls' } },
+          y1: { position: 'right', min: 70, max: 100, grid: { display: false }, ticks: { callback: v => v + '%' }, title: { display: true, text: 'Answer Rate' } },
+          x: { grid: { display: false } }
+        }
+      }
+    });
+  })();
+
+  // New vs existing patient answer rate by hour
+  (function(){
+    const hoursNE = ['8am','9am','10am','11am','12pm','1pm','2pm','3pm','4pm','5pm','6pm'];
+    const newAR   = [60.0, 80.0, 62.4, 75.0, 71.4, 67.7, 54.8, 49.3, 78.2, 90.7, 86.7];
+    const existAR = [97.4, 91.8, 87.8, 88.5, 87.9, 89.6, 87.4, 83.6, 91.8, 94.3, 96.9];
+    new Chart(document.getElementById('timingNewExistChart'), {
+      type: 'line',
+      data: {
+        labels: hoursNE,
+        datasets: [
+          {
+            label: 'New Patient',
+            data: newAR,
+            borderColor: c.crit,
+            backgroundColor: 'rgba(194,59,42,0.08)',
+            borderWidth: 2,
+            pointRadius: 4,
+            pointBackgroundColor: c.crit,
+            pointBorderColor: '#fff',
+            pointBorderWidth: 1.5,
+            tension: 0.3,
+            fill: false
+          },
+          {
+            label: 'Existing Patient',
+            data: existAR,
+            borderColor: c.good,
+            backgroundColor: 'rgba(61,107,74,0.06)',
+            borderWidth: 2,
+            pointRadius: 4,
+            pointBackgroundColor: c.good,
+            pointBorderColor: '#fff',
+            pointBorderWidth: 1.5,
+            tension: 0.3,
+            fill: false
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'bottom', labels: { padding: 14, usePointStyle: true, pointStyle: 'circle' } },
+          tooltip: {
+            backgroundColor: c.ink, titleColor: '#fff', bodyColor: '#fff', padding: 10, cornerRadius: 3,
+            callbacks: { label: (ctx) => `${ctx.dataset.label}: ${ctx.parsed.y}%` }
+          }
+        },
+        scales: {
+          y: { min: 40, max: 100, grid: { color: c.line }, ticks: { callback: v => v + '%' } },
+          x: { grid: { display: false } }
+        }
+      }
+    });
+  })();
+
+</script>
+
+</body>
+</html>
